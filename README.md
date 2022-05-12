@@ -55,12 +55,12 @@ Raspberry pi zero とPCを有線で繋ぐ。
 
 Wiring Pi とは、ラズパイでGPIOを制御するのに必要なC言語用のライブラリのこと。WiringPiをインストールするとgpioというコマンドもインストールされる。このコマンドを使うと、シェル上でGPIOを制御することができる。  
 ・まずはCで動かすので、WiringPiを入れる。pi@raspberry下で  
-	1.  sudo apt-get install libi2c-dev
-	2.  sudo apt-get install git-core　 （gitのインストール）
-	3.  cd ~ （ホームディレクトリへ移動）
-	4.  git clone https://github.com/WiringPi/WiringPi.git （Wiring Pi のソースコードが wiringPiディレクトリとしてクローン）
-	5.  cd WiringPi（WiringPiディレクトリへ移動）
-	6.  ./build（ビルドする）
+	1.  sudo apt-get install libi2c-dev  
+	2.  sudo apt-get install git-core　 （gitのインストール）  
+	3.  cd ~ （ホームディレクトリへ移動）  
+	4.  git clone https://github.com/WiringPi/WiringPi.git （Wiring Pi のソースコードが wiringPiディレクトリとしてクローン）  
+	5.  cd WiringPi（WiringPiディレクトリへ移動）  
+	6.  ./build（ビルドする）  
 
 実行ファイルの作り方
 
