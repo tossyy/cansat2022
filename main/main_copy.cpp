@@ -26,16 +26,16 @@ unsigned char updated;
 #define MOTOR_RIN2 7
 #define MOTOR_LIN1 6
 #define MOTOR_LIN2 5
-void MOTOR_R_FORWARD(){analogWrite(MOTOR_RIN1, 255);analogWrite(MOTOR_RIN2, 0);}
-void MOTOR_R_BACKWARD(){analogWrite(MOTOR_RIN1, 0);analogWrite(MOTOR_RIN2, 255);}
-void MOTOR_R_STOP(){analogWrite(MOTOR_RIN1, 0);analogWrite(MOTOR_RIN2, 0);}
-void MOTOR_L_FORWARD(){analogWrite(MOTOR_LIN1, 255);analogWrite(MOTOR_LIN2, 0);}
-void MOTOR_L_BACKWARD(){analogWrite(MOTOR_LIN1, 0);analogWrite(MOTOR_LIN2, 255);}
-void MOTOR_L_STOP(){analogWrite(MOTOR_LIN1, 0);analogWrite(MOTOR_LIN2, 0);}
-void MOTOR_FORWARD(){MOTOR_R_FORWARD();MOTOR_L_FORWARD();}
-void MOTOR_TURN_R(){MOTOR_R_BACKWARD();MOTOR_L_FORWARD();}
-void MOTOR_TURN_L(){MOTOR_R_FORWARD();MOTOR_L_BACKWARD();}
-void MOTOR_STOP(){MOTOR_R_STOP();MOTOR_L_STOP();}
+void MOTOR_R_FORWARD(){analogWrite(MOTOR_RIN1, 255);analogWrite(MOTOR_RIN2, 0);}  //前進（R）
+void MOTOR_R_BACKWARD(){analogWrite(MOTOR_RIN1, 0);analogWrite(MOTOR_RIN2, 255);}  //後退（R）
+void MOTOR_R_STOP(){analogWrite(MOTOR_RIN1, 0);analogWrite(MOTOR_RIN2, 0);}  //停止（R）
+void MOTOR_L_FORWARD(){analogWrite(MOTOR_LIN1, 255);analogWrite(MOTOR_LIN2, 0);}  //前身（L）
+void MOTOR_L_BACKWARD(){analogWrite(MOTOR_LIN1, 0);analogWrite(MOTOR_LIN2, 255);}  //後退（L）
+void MOTOR_L_STOP(){analogWrite(MOTOR_LIN1, 0);analogWrite(MOTOR_LIN2, 0);}  //停止（L）
+void MOTOR_FORWARD(){MOTOR_R_FORWARD();MOTOR_L_FORWARD();}  //前身（R＋L）
+void MOTOR_TURN_R(){MOTOR_R_BACKWARD();MOTOR_L_FORWARD();}  //右回転
+void MOTOR_TURN_L(){MOTOR_R_FORWARD();MOTOR_L_BACKWARD();}  //左回転
+void MOTOR_STOP(){MOTOR_R_STOP();MOTOR_L_STOP();}  //停止（R＋L）
 
 #include <SD.h>
 File logFile;
