@@ -1,6 +1,6 @@
 from machine import Machine
 
 ma = Machine()
-print( "hajimemasu")
+print("hajimemasu")
 ma.run()
 print("owarimasita")
