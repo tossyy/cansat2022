@@ -84,11 +84,13 @@ class Machine: #機体
 
 
     def phase1(self):
+        print("phase1 hajime")
 
     def phase2(self):
+        print("phase2 hajime")
 
     def run(self):
         phase1()
-        print("phase1 finish")
+        print("phase1 owari")
         phase2()
-        print("phase2 finish")
+        print("phase2 owari")
