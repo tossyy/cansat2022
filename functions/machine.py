@@ -94,3 +94,5 @@ class Machine: #機体
         print("phase1 owari")
         phase2()
         print("phase2 owari")
+        phase3()
+        print("pfase3 owari")
