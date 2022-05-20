@@ -12,9 +12,9 @@ Raspbian をSDカードに流し込む。GUI使わないなら、Liteで大丈�
 ↓  
 SDカードにSSHとWi-fiの設定を書き込む。GUI環境じゃないならこれやらないと多分何もできない。  
 1. ターミナル開く（以下ここに入力）
-2. cd /Volumes/boot（SDカードに入る）
-3. touch ssh（sshというか空のファイルを作る。これでsshが有効になってターミナルからログイン可能。）  
-4. wpa_supplicant.conf を作成（code wpa_supplicant.confとかで良い）  
+2. `cd /Volumes/boot`（SDカードに入る）
+3. `touch ssh`（sshという空のファイルを作る。これでsshが有効になってターミナルからログイン可能。）  
+4. wpa_supplicant.conf を作成（`code wpa_supplicant.conf`とかで良い）  
 
 ↓  
 wpa_supplicant.confの中身を以下のように編集
@@ -39,7 +39,7 @@ update_config=1
 country=JP
 
 network={
-	ssid="SSID(=iPhoneの名前)"
+	ssid="SSID(=スマホの名前)"
 	psk="パスワード"
 	proto=RSN
 	priority=1
@@ -49,7 +49,7 @@ network={
 ↓  
 Raspberry pi zero とPCを有線で繋ぐ。  
 ↓  
-ターミナルを開いて、ssh pi@raspberrypi.local を打ち込む。（raspberrypiのところはたぶんホスト名？OSをSDカードに焼くときに設定から決められるはず）  
+ターミナルを開いて、`ssh pi@raspberrypi.local` を打ち込む。（raspberrypiのところはたぶんホスト名？OSをSDカードに焼くときに設定から決められるはず）  
 ↓  
 質問にyesと答える。  
 ↓  
