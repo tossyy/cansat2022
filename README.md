@@ -12,9 +12,9 @@ Raspbian をSDカードに流し込む。GUI使わないなら、Liteで大丈�
 ↓  
 SDカードにSSHとWi-fiの設定を書き込む。GUI環境じゃないならこれやらないと多分何もできない。  
 1. ターミナル開く（以下ここに入力）
-2. cd /Volumes/boot（SDカードに入る）
-3. touch ssh（sshというか空のファイルを作る。これでsshが有効になってターミナルからログイン可能。）  
-4. wpa_supplicant.conf を作成（code wpa_supplicant.confとかで良い）  
+2. `cd /Volumes/boot`（SDカードに入る）
+3. `touch ssh`（sshという空のファイルを作る。これでsshが有効になってターミナルからログイン可能。）  
+4. wpa_supplicant.conf を作成（`code wpa_supplicant.conf`とかで良い）  
 
 ↓  
 wpa_supplicant.confの中身を以下のように編集
@@ -58,7 +58,7 @@ Raspberry pi zero とPCを有線で繋ぐ。
 
 ## <span style="color : #00ffff"> 使うかもしれないコマンド </span>
 
-* パスワードの変更　　```sudo passwd <user name>```  
+* パスワードの変更　　```bash sudo passwd <user name>```  
 新しいパスワードを聞かれるので次回以降使いたいパスワードを入力。  
 * アップデート　　`sudo apt-get update`  
 * アップグレード　　`sudo apt-get upgrade`  
