@@ -58,7 +58,7 @@ Raspberry pi zero とPCを有線で繋ぐ。
 
 ## <span style="color : #00ffff"> 使うかもしれないコマンド </span>
 
-* パスワードの変更　　```bash sudo passwd <user name>```  
+* パスワードの変更　　`sudo passwd <user name>`  
 新しいパスワードを聞かれるので次回以降使いたいパスワードを入力。  
 * アップデート　　`sudo apt-get update`  
 * アップグレード　　`sudo apt-get upgrade`  
