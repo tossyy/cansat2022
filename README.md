@@ -39,7 +39,7 @@ update_config=1
 country=JP
 
 network={
-	ssid="SSID(=iPhoneの名前)"
+	ssid="SSID(=スマホの名前)"
 	psk="パスワード"
 	proto=RSN
 	priority=1
