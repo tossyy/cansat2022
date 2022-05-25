@@ -1,6 +1,7 @@
 import pigpio as pig
 
 #ピン番号を設定
+#数字は仮置きです
 motor_r1 = 1 #モーターR（前進）
 motor_l1 = 2 #モーターL（前進）
 motor_r2 = 3 #モーターR（後退）
