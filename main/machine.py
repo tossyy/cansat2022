@@ -76,9 +76,9 @@ class Sensa_baro: #気圧センサ
     i2c = smbus.SMBus(1) #オブジェクト生成
     address = 0x5C 
     CTRL_REG1 = 0x20
-    PRESS_OUT_XL = 0x28 #最下位ビット
-    PRESS_OUT_L = 0x29 #下位ビット
-    PRESS_OUT_H = 0x2A #上位ビット
+    PRESS_OUT_XL = 0x28 #最下位8ビット
+    PRESS_OUT_L = 0x29 #下位8ビット
+    PRESS_OUT_H = 0x2A #上位8ビット
     WHO_AM_I = 0x0F #who_am_i用のアドレス
     LPS25H_WHO_ID = 0xBD #今回使う気圧センサのアドレス
 
