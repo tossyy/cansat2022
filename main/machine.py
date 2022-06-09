@@ -10,8 +10,8 @@ motor_r2 = 3 #モーターR（後退）
 motor_l2 = 4 #モーターL（後退）
 sensa_9_out = 5 #9軸センサ（出力）
 sensa_9_in = 6 #9軸センサ（読取）
-sensa_ato_out = 7 #気圧センサ（出力）
-sensa_ato_in = 8 #気圧センサ（読取）
+sensa_baro_out = 7 #気圧センサ（出力）
+sensa_baro_in = 8 #気圧センサ（読取）
 sensa_light_out = 9 #光センサ（出力）
 sensa_light_in = 10 #光センサ（読取）
 gps_out = 11 #GPS（出力）
@@ -71,7 +71,7 @@ class Sensa_9: #9軸センサ
         self.pi.set_mode(sensa_9_out, pig.OUTPUT)
         self.pi.set_mode(sensa_9_in, pig.INOUT)
 
-class Sensa_ato: #気圧センサ
+class Sensa_baro: #気圧センサ
 
     i2c = smbus.SMBus(1) #オブジェクト生成
     address = 0x5C 
@@ -84,8 +84,8 @@ class Sensa_ato: #気圧センサ
 
     def __init__(self, pi):
         self.pi = pi
-        self.pi.set_mode(sensa_ato_out, pig.OUTPUT)
-        self.pi.set_mode(sensa_ato_in, pig.INPUT)
+        self.pi.set_mode(sensa_baro_out, pig.OUTPUT)
+        self.pi.set_mode(sensa_baro_in, pig.INPUT)
         self.i2c.write_byte_data(self.address, self.CTRL_REG1, 0x90) #
     
     def testWhoAmI(self):
@@ -128,20 +128,26 @@ class Machine: #機体
         self.pi = pig.pi()
         self.motor = Motor(self.pi)
         self.sensa_9 = Sensa_9(self.pi)
-        self.sensa_ato = Sensa_ato(self.pi)
+        self.sensa_baro = Sensa_baro(self.pi)
         self.sensa_light = Sensa_light(self.pi)
         self.gps = Gps(self.pi)
 
 
-    def phase1(self):
+    def phase1(self): #phase1。放出判定。
         print("phase1 hajime")
-        try 
+        while True :
+            if self.sensa_baro.detectDvice() != False:
+                continue
+            break
+
         print("phase1 owari")
 
     def phase2(self):
         print("phase2 hajime")
+        print("phase2 owari")
     
     def phase3(self):
+        print("phase3 hajime")
         print("phase3 owari")
 
     def run(self):
