@@ -1,24 +1,24 @@
 import pigpio as pig #ピンの設定に使います
 import smbus #気圧センサの管理に使います
 from time import sleep #時間間隔に使います
-
-#ピン番号を設定
-#数字は仮置きです
-
-
-
-
-
+from motor import Motor
+from nine import Nine
+from pressure import Pressure
+from gps import Gps
+from light import Light
+from jump import Jump
 
 class Machine: #機体
 
     def __init__(self): #全ての機能を搭載
+        self.i2c = smbus.SMBus
         self.pi = pig.pi()
         self.motor = Motor(self.pi)
-        self.sensa_9 = Sensa_9(self.pi)
-        self.sensa_baro = Sensa_baro(self.pi)
-        self.sensa_light = Sensa_light(self.pi)
+        self.nine = Nine(self.pi, self.i2c)
+        self.pressure = Pressure(self.pi, self.i2c)
+        self.light = Light(self.pi, self.i2c)
         self.gps = Gps(self.pi)
+        
 
 
     def phase1(self): #phase1。放出判定。
@@ -29,6 +29,7 @@ class Machine: #機体
             break
 
         while True :
+
 
 
         print("phase1 owari")
