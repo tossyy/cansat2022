@@ -90,7 +90,7 @@ class Machine: #機体
                 is_continue = True
                 start_time = time.perf_counter()
             
-            time.sleep(0.5)
+            time.sleep(0.3)
         
         # Phase 1 が終わった時刻を記録
         self.phase1_time = time.perf_counter()
@@ -136,11 +136,6 @@ class Machine: #機体
 
                 # 時間を測る
                 tim_case1 = time.perf_counter() - start_time
-                tim_case2 = time.perf_counter() - self.phase1_time
-
-                if tim_case2 > 120:
-                    print("着地判定：ケース②")
-                    break
 
                 if tim_case1 > 20:
                     print("着地判定：ケース①")
@@ -150,6 +145,14 @@ class Machine: #機体
             elif abs(statistics.mean(pressure_list) - pressure_val) <= 0.1 or abs(statistics.mean(altitude_list) - altitude_val) <= 0.1:
                 is_continue = True
                 start_time = time.perf_counter()
+
+            
+            tim_case2 = time.perf_counter() - self.phase1_time
+            if tim_case2 > 120:
+                print("着地判定：ケース②")
+                break
+
+            time.sleep(0.3)
 
         print("phase2 finished")
 
