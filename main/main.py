@@ -1,6 +1,9 @@
 from machine import Machine
 
+print("Machine setting up...")
 ma = Machine()
-print("hajimemasu")
+print("Set up finished")
+
+print("Mision start")
 ma.run()
-print("owarimashita")
+print("Mission complete")
