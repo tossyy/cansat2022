@@ -135,13 +135,14 @@ class Machine: #機体
                     continue
 
                 # 時間を測る
-                tim = time.perf_counter() - start_time
+                tim_case1 = time.perf_counter() - start_time
+                tim_case2 = time.perf_counter() - self.phase1_time
 
-                if tim > 120:
+                if tim_case2 > 120:
                     print("着地判定：ケース②")
                     break
 
-                if tim > 20:
+                if tim_case1 > 20:
                     print("着地判定：ケース①")
                     break
 
