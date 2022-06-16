@@ -1,10 +1,9 @@
-from pickle import FALSE
-import pigpio as pig #ピンの設定に使います
+# import pigpio as pig #ピンの設定に使います
 import smbus #気圧センサの管理に使います
 import time
 import statistics
-from motor import Motor
-from nine import Nine
+# from motor import Motor
+# from nine import Nine
 from pressure import Pressure
 from gps import GPS
 from light import Light
@@ -17,13 +16,13 @@ class Machine: #機体
         self.i2c = smbus.SMBus(1)
 
         # ピン初期化
-        self.pi = pig.pi()
+        # self.pi = pig.pi()
 
         # モーター初期化
-        self.motor = Motor(self.pi)
+        # self.motor = Motor(self.pi)
 
         # 9軸センサー初期化
-        self.nine = Nine(self.i2c)
+        # self.nine = Nine(self.i2c)
 
         # 気圧センサー初期化
         self.pressure = Pressure(self.i2c)
@@ -36,9 +35,6 @@ class Machine: #機体
 
         # ジャンパピン初期化
         self.jump = Jump(self.i2c)
-
-        # 光センサー初期化
-        self.light = Light(self.i2c)
         
 
     def phase1(self): # Phase 1。放出判定。
