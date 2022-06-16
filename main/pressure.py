@@ -34,5 +34,5 @@ class Pressure: #気圧センサ
         p += self.i2c.read_i2c_block_data(self.ADDRESS,self.PRESS_OUT_H,1)
         return p[2] << 16 | p[1] << 8 | p[0] #データの接合
     
-    def read_pressure_hPa(self, i2c):
+    def get_pressure_hPa(self, i2c):
         return self.get_pressure_raw() / 4096
