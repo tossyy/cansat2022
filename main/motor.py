@@ -30,8 +30,8 @@ class Motor:
 
         #PWMオブジェクトのインスタンスを作成
         #出力ピン：12,26  周波数：100Hz
-        self.p_a = GPIO.PWM(PWMA,100)
-        self.p_b = GPIO.PWM(PWMB,100)
+        self.p_a = GPIO.PWM(self.PWMA,100)
+        self.p_b = GPIO.PWM(self.PWMB,100)
 
         #PWM信号を出力
         self.p_a.start(0)
