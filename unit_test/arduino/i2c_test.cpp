@@ -2,8 +2,8 @@
 
 const int SLAVE_ADDRESS = 0x8;
 
-const int CdsPin = A1;
-const int JumperPin = 6;
+const int CdsPin = A0;
+const int JumperPin = 13;
 
 int CdsVal = 0;
 int JumperVal = 0;
