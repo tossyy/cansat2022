@@ -15,7 +15,7 @@ class Machine: #機体
         self.i2c = smbus.SMBus(1)
 
         # モーター初期化
-        self.motor = Motor(self.pi)
+        self.motor = Motor()
 
         # 9軸センサー初期化
         # self.nine = Nine(self.i2c)
