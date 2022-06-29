@@ -34,7 +34,7 @@ class Machine: #機体
         
 
     def phase1(self): # Phase 1。放出判定。
-        print("phase1 start")
+        print("################\n# phase1 start #\n################")
 
         '''
         【放出判定】
@@ -90,7 +90,7 @@ class Machine: #機体
         print("phase1 finished")
 
     def phase2(self): # 着地判定
-        print("phase2 start")
+        print("################\n# phase2 start #\n################")
 
         '''
         【着地判定】
@@ -149,6 +149,7 @@ class Machine: #機体
         print("phase2 finished")
 
     def phase3(self):
+        print("################\n# phase3 start #\n################")
 
         print("3秒前進する")
         self.motor.func_forward()
@@ -188,6 +189,8 @@ class Machine: #機体
         print("3秒ブレーキ")
         self.motor.func_brake()
         time.sleep(3.0)
+
+        print("phase3 finished")
 
     def close(self):
         self.i2c.close()
