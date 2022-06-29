@@ -199,4 +199,5 @@ class Machine: #機体
     def run(self):
         self.phase1()
         self.phase2()
+        self.phase3()
         self.close()
