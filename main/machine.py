@@ -61,7 +61,7 @@ class Machine: #機体
             # 値を取得し出力
             light_val = self.light.get_val()
             jump_is_off = self.jump.is_off()
-            print("光センサ:{}, ジャンパピン:{}".format(light_val, jump_is_off))
+            print("光センサ:{:3}, ジャンパピン:{}, 継続:{}".format(light_val, jump_is_off, is_continue))
             
             if is_continue:
 
