@@ -1,8 +1,7 @@
-# import pigpio as pig #ピンの設定に使います
 import smbus #気圧センサの管理に使います
 import time
 import statistics
-# from motor import Motor
+from motor import Motor
 # from nine import Nine
 from pressure import Pressure
 from gps import GPS
@@ -15,11 +14,8 @@ class Machine: #機体
         # i2c初期化
         self.i2c = smbus.SMBus(1)
 
-        # ピン初期化
-        # self.pi = pig.pi()
-
         # モーター初期化
-        # self.motor = Motor(self.pi)
+        self.motor = Motor(self.pi)
 
         # 9軸センサー初期化
         # self.nine = Nine(self.i2c)
@@ -152,8 +148,50 @@ class Machine: #機体
 
         print("phase2 finished")
 
+    def phase3(self):
+
+        print("3秒前進する")
+        self.motor.func_forward()
+        time.sleep(3.0)        
+        print("3秒ブレーキ")
+        self.motor.func_brake()
+        time.sleep(3.0)
+        
+        
+        print("1.5秒右回転する")
+        self.motor.func_right()
+        time.sleep(1.5)
+        print("3秒ブレーキ")
+        self.motor.func_brake()
+        time.sleep(3.0)
+        
+
+        print("2.8秒左回転する")
+        self.motor.func_left()
+        time.sleep(2.8)
+        print("3秒ブレーキ")
+        self.motor.func_brake()
+        time.sleep(3.0)
+
+
+        print("1.5秒右回転する")
+        self.motor.func_right()
+        time.sleep(1.5)
+        print("3秒ブレーキ")
+        self.motor.func_brake()
+        time.sleep(3.0) 
+
+
+        print("3秒後進する")
+        self.motor.func_back()
+        time.sleep(3.0)
+        print("3秒ブレーキ")
+        self.motor.func_brake()
+        time.sleep(3.0)
+
     def close(self):
         self.i2c.close()
+        self.motor.close()
 
     def run(self):
         self.phase1()
