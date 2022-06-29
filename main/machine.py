@@ -116,7 +116,7 @@ class Machine: #機体
             # 値を取得し出力
             pressure_val = self.pressure.get_pressure()
             altitude_val = self.gps.get_position()['altitude']
-            print("気圧:{:.3f}, 高度:{}}, 継続:{}".format(pressure_val, altitude_val, is_continue))
+            print("気圧:{:.3f}, 高度:{}, 継続:{}".format(pressure_val, altitude_val, is_continue))
 
             pressure_list.append(pressure_val)
             altitude_list.append(altitude_val)
