@@ -20,13 +20,13 @@ class Motor:
         self.PWMB = 17
 
         #各ピンを出力ピンに設定
-        GPIO.setup(AIN1, GPIO.OUT, initial = GPIO.LOW)
-        GPIO.setup(AIN2, GPIO.OUT, initial = GPIO.LOW)
-        GPIO.setup(PWMA, GPIO.OUT, initial = GPIO.LOW)
+        GPIO.setup(self.AIN1, GPIO.OUT, initial = GPIO.LOW)
+        GPIO.setup(self.AIN2, GPIO.OUT, initial = GPIO.LOW)
+        GPIO.setup(self.PWMA, GPIO.OUT, initial = GPIO.LOW)
 
-        GPIO.setup(BIN1, GPIO.OUT, initial = GPIO.LOW)
-        GPIO.setup(BIN2, GPIO.OUT, initial = GPIO.LOW)
-        GPIO.setup(PWMB, GPIO.OUT, initial = GPIO.LOW)
+        GPIO.setup(self.BIN1, GPIO.OUT, initial = GPIO.LOW)
+        GPIO.setup(self.BIN2, GPIO.OUT, initial = GPIO.LOW)
+        GPIO.setup(self.PWMB, GPIO.OUT, initial = GPIO.LOW)
 
         #PWMオブジェクトのインスタンスを作成
         #出力ピン：12,26  周波数：100Hz
