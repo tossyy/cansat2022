@@ -4,6 +4,7 @@ import time
 import statistics
 import math
 import readchar
+import RPi.GPIO as GPIO
 from motor import Motor
 # from nine import Nine
 from pressure import Pressure
