@@ -45,6 +45,12 @@ class Motor:
         self.p_a.ChangeDutyCycle(val)
         self.p_b.ChangeDutyCycle(val)
 
+    #スピードを調整する関数
+    def change_speed(self, val):
+        self.p_a.ChangeDutyCycle(val)
+        self.p_b.ChangeDutyCycle(val)
+        
+
     #ブレーキする関数
     def func_brake(self):
         GPIO.output(self.AIN1, GPIO.HIGH)
