@@ -88,6 +88,10 @@ class Machine: #機体
             
             time.sleep(0.3)
         
+        self.i2c.write_byte(0x8, 0)
+        time.sleep(0.3)
+        self.i2c.write_byte(0x8, 1)
+        
         # Phase 1 が終わった時刻を記録
         self.phase1_time = time.perf_counter()
 
