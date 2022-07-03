@@ -152,6 +152,8 @@ class Machine: #機体
             time.sleep(0.3)
         
         self.i2c.write_byte(0x8, 0)
+        time.sleep(1)
+        self.i2c.write_byte(0x8, 1)
 
         print("###################\n# phase2 finished #\n###################")
 
