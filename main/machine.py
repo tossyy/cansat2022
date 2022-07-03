@@ -192,6 +192,58 @@ class Machine: #機体
 
         print("###################\n# phase3 finished #\n###################")
 
+    def controll(self):
+
+        print("-----入力開始-----")
+
+        states = ['Forward', 'Back', 'Turn Left', 'Turn Right', 'Stop']
+        current_state = 'Stop'
+
+        while True:
+            c = readchar.readkey()
+
+            if c == 'w' and current_state != states[0]:
+                self.motor.func_forward()
+                current_state = states[0]
+            
+            if c == 's' and current_state != states[1]:
+                self.motor.func_back()
+                current_state = states[1]
+            
+            if c == 'a' and current_state != states[2]:
+                self.motor.func_left()
+                current_state = states[2]
+
+            if c == 'd' and current_state != states[3]:
+                self.motor.func_right()
+                current_state = states[3]
+
+            if c == ' ' and current_state != states[4]:
+                self.motor.func_brake()
+                current_state = states[4]
+
+            if c == 'q':
+                break
+
+    def remember_gps(self):
+        print('-----位置情報取得開始-----')
+        latitude_list = []
+        longitude_list = []
+
+        for i in range(10):
+            position = self.gps.get_position()
+            latitude_list.append((position['latitude']))
+            longitude_list.append()
+        
+        latitude = statistics.mean(latitude_list)
+        longitude = statistics.mean(longitude_list)
+
+        file_path = 'target_pisision.txt'
+        with open(file_path, mode='w') as f:
+            f.write(str(latitude) + '\n' + str(longitude))
+        
+        print('-----位置情報取得終了-----')
+
     def close(self):
         self.i2c.close()
         self.motor.close()
