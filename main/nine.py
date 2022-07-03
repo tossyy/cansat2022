@@ -1,6 +1,5 @@
 import smbus #気圧センサの管理に使います
 import time #時間間隔に使います
-from motor import Motor
 
 class Nine: #9軸センサ
 
