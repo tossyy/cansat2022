@@ -5,8 +5,8 @@
 
 const int SLAVE_ADDRESS = 0x8;
 
-const int CdsPin = A1;
-const int JumperPin = 6;
+const int CdsPin = A0;
+const int JumperPin = 13;
 const int Ni = 2;
 
 int CdsVal = 0;
@@ -44,5 +44,5 @@ void recieveEvent(int bitstream) {
 
 
 void loop() {
-  digitalWrite(Ni, NicromOff)
+  digitalWrite(Ni, NicromOff);
 }
