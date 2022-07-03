@@ -86,7 +86,7 @@ class Machine: #機体
                 is_continue = True
                 start_time = time.perf_counter()
             
-            time.sleep(1)
+            time.sleep(0.3)
         
         # Phase 1 が終わった時刻を記録
         self.phase1_time = time.perf_counter()
