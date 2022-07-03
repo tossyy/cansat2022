@@ -188,7 +188,7 @@ class Machine: #機体
             longitude = current_position['longitude']
             print("(latitude, longitude) = ({}, {})".format(latitude, longitude))
 
-            if dist(latitude, longitude) < 0.01:
+            if dist(latitude, longitude) < 0.1:
                 break
 
             time.sleep(3.0)
