@@ -1,6 +1,7 @@
 import smbus #気圧センサの管理に使います
 import time
 import statistics
+import readchar
 from motor import Motor
 # from nine import Nine
 from pressure import Pressure
@@ -148,7 +149,7 @@ class Machine: #機体
 
         print("###################\n# phase2 finished #\n###################")
 
-    def phase3(self):
+    def phase3(self): # キャリブレーション
         print("###################\n# phase3 start    #\n###################")
 
         print("3秒前進する")
@@ -159,32 +160,8 @@ class Machine: #機体
         time.sleep(3.0)
         
         
-        print("1.5秒右回転する")
+        print("3秒右回転する")
         self.motor.func_right()
-        time.sleep(1.5)
-        print("3秒ブレーキ")
-        self.motor.func_brake()
-        time.sleep(3.0)
-        
-
-        print("2.8秒左回転する")
-        self.motor.func_left()
-        time.sleep(2.8)
-        print("3秒ブレーキ")
-        self.motor.func_brake()
-        time.sleep(3.0)
-
-
-        print("1.5秒右回転する")
-        self.motor.func_right()
-        time.sleep(1.5)
-        print("3秒ブレーキ")
-        self.motor.func_brake()
-        time.sleep(3.0) 
-
-
-        print("3秒後進する")
-        self.motor.func_back()
         time.sleep(3.0)
         print("3秒ブレーキ")
         self.motor.func_brake()
@@ -192,7 +169,13 @@ class Machine: #機体
 
         print("###################\n# phase3 finished #\n###################")
 
-    def controll(self):
+    def phase4(self):
+        print("###################\n# phase3 start    #\n###################")
+
+        print("###################\n# phase3 finished #\n###################")
+
+
+    def control(self):
 
         print("-----入力開始-----")
 
@@ -252,4 +235,5 @@ class Machine: #機体
         self.phase1()
         self.phase2()
         self.phase3()
+        self.phase4()
         self.close()
