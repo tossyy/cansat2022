@@ -1,6 +1,8 @@
+from multiprocessing.dummy import current_process
 import smbus #気圧センサの管理に使います
 import time
 import statistics
+import math
 import readchar
 from motor import Motor
 # from nine import Nine
@@ -146,6 +148,8 @@ class Machine: #機体
                 break
 
             time.sleep(0.3)
+        
+        self.i2c.write_byte(0x8, 0)
 
         print("###################\n# phase2 finished #\n###################")
 
@@ -171,6 +175,25 @@ class Machine: #機体
 
     def phase4(self):
         print("###################\n# phase3 start    #\n###################")
+        
+        file_path = 'target_pisision.txt'
+        with open(file_path, mode='r') as f:
+            lines = [s.strip() for s in f.readlines()]
+            target_latitude = float(lines[0])
+            target_longitude = float(lines[1])
+        
+        dist = lambda latitude, longitude: math.sqrt((latitude-target_latitude)**2 + (longitude-target_longitude)**2)
+
+        while True:
+            current_position = self.gps.get_position()
+            latitude = current_position['latitude']
+            longitude = current_position['longitude']
+            print("(latitude, longitude) = ({}, {})".format(latitude, longitude))
+
+            if dist(latitude, longitude) < 0.1:
+                break
+
+            time.sleep(3.0)
 
         print("###################\n# phase3 finished #\n###################")
 
@@ -215,8 +238,8 @@ class Machine: #機体
 
         for i in range(10):
             position = self.gps.get_position()
-            latitude_list.append((position['latitude']))
-            longitude_list.append()
+            latitude_list.append(position['latitude'])
+            longitude_list.append(position['longitude'])
         
         latitude = statistics.mean(latitude_list)
         longitude = statistics.mean(longitude_list)
