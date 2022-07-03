@@ -44,4 +44,5 @@ void recieveEvent(int bitstream) {
 
 
 void loop() {
+  digitalWrite(Ni, NicromOff)
 }
