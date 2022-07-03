@@ -148,6 +148,8 @@ class Machine: #機体
                 break
 
             time.sleep(0.3)
+        
+        self.i2c.write_byte(0x8, 0)
 
         print("###################\n# phase2 finished #\n###################")
 
