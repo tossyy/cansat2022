@@ -71,8 +71,8 @@ class Nine: #9軸センサ
 
             #ある程度きたら，重心を撮り続ける
             if time.perf_counter() - start_time > 2:
-                g_x.append(self.cul_centergravity()[0])
-                g_y.append(self.cul_centergravity()[1])
+                g_x.append(self.cul_centergravity(x, y)[0])
+                g_y.append(self.cul_centergravity(x, y)[1])
             time.sleep(0.3)
         
         motor.func_brake()
