@@ -46,8 +46,8 @@ class Nine: #9軸センサ
         except IOError as e:
             print("I/O error({0}): {1}".format(e.errno, e.strerror))
 
-        mag = [mag_data[0]-self.correction_x, mag[1]-self.correction_y, mag[2]] #補正
-        return mag
+        self.mag_value = [mag_data[0]-self.correction_x, mag[1]-self.correction_y, mag[2]] #補正
+        return self.mag_value
 
     def cul_centergravity(self, x, y):
         return [sum(x)/len(x), sum(y)/len(y)]
