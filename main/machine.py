@@ -124,7 +124,7 @@ class Machine: #機体
             if is_continue:
 
                 # 継続が切れていた場合、やり直し
-                if abs(statistics.mean(pressure_list) - pressure_val) > 0.1 or abs(statistics.mean(altitude_list) - altitude_val) > 0.1:
+                if abs(statistics.mean(pressure_list) - pressure_val) > 0.1 or abs(statistics.mean(altitude_list) - altitude_val) > 0.2:
                     is_continue = False
                     pressure_list = []
                     altitude_list = []
@@ -138,7 +138,7 @@ class Machine: #機体
                     break
 
             # 継続条件を満たした場合
-            elif abs(statistics.mean(pressure_list) - pressure_val) <= 0.1 or abs(statistics.mean(altitude_list) - altitude_val) <= 0.1:
+            elif abs(statistics.mean(pressure_list) - pressure_val) <= 0.1 or abs(statistics.mean(altitude_list) - altitude_val) <= 0.2:
                 is_continue = True
                 start_time = time.perf_counter()
 
