@@ -48,14 +48,13 @@ class Nine: #9軸センサ
             print("I/O error({0}): {1}".format(e.errno, e.strerror))
 
         mag = [mag_data[0]-self.correction_x, mag[1]-self.correction_y, mag[2]] #補正
-        print("Mag -> x:{}, y:{}, z: {}".format(mag[0], mag[1], mag[2]))
-        print("\n")
         return mag
 
     def cul_centergravity(self, x, y):
         return [sum(x)/len(x), sum(y)/len(y)]
     
     def calibrate(self, motor):
+        print("caliblation start")
         self.motor = motor
         x = []
         y = []
@@ -64,6 +63,8 @@ class Nine: #9軸センサ
         start_time = time.perf_counter()
 
         #10秒間，値を取る
+        motor.change_speed(20)
+        motor.func_right()
         while time.perf_counter() - start_time < 10:
             mag = self.get_mag_value()
             x.append(mag[0])
@@ -73,6 +74,9 @@ class Nine: #9軸センサ
             if time.perf_counter() - start_time > 2:
                 g_x.append(self.cul_centergravity()[0])
                 g_y.append(self.cul_centergravity()[1])
+            time.sleep(0.3)
+        
+        motor.func_brake()
         
         #g_yが一番大きくなるインデックスをとる。
         max_index = g_y.index(max(g_y)) 
@@ -81,7 +85,7 @@ class Nine: #9軸センサ
         self.correction_x = g_x[max_index]
         self.correction_y = g_y[max_index]
 
-        return None
+        print("caliblation finish")
 
 
 
