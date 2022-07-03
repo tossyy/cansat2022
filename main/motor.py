@@ -1,7 +1,7 @@
 #coding:utf-8
 
 #GPIOライブラリをインポート
-import rpi-ws281x as GPIO
+import rpi_ws281x as GPIO
 
 class Motor:
 
