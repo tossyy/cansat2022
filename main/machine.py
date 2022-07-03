@@ -38,6 +38,7 @@ class Machine: #機体
         
 
     def phase1(self): # Phase 1。放出判定。
+        self.i2c.write_byte(0x8, 1)
         print("###################\n# phase1 start    #\n###################")
 
         '''
