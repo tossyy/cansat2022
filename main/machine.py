@@ -6,7 +6,7 @@ import math
 import readchar
 import RPi.GPIO as GPIO
 from motor import Motor
-# from nine import Nine
+from nine import Nine
 from pressure import Pressure
 from gps import GPS
 from light import Light
@@ -22,7 +22,7 @@ class Machine: #機体
         self.motor = Motor()
 
         # 9軸センサー初期化
-        # self.nine = Nine(self.i2c)
+        self.nine = Nine(self.i2c)
 
         # 気圧センサー初期化
         self.pressure = Pressure(self.i2c)
@@ -160,6 +160,8 @@ class Machine: #機体
     def phase3(self): # キャリブレーション
         print("###################\n# phase3 start    #\n###################")
 
+        self.nine.calibrate(self.motor)
+        '''
         print("3秒前進する")
         self.motor.func_forward()
         time.sleep(3.0)        
@@ -174,6 +176,7 @@ class Machine: #機体
         print("3秒ブレーキ")
         self.motor.func_brake()
         time.sleep(3.0)
+        '''
 
         print("###################\n# phase3 finished #\n###################")
 
