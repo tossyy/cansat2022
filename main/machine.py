@@ -223,11 +223,11 @@ class Machine: #機体
                 self.motor.func_back()
                 current_state = states[1]
             
-            if c == 'a' and current_state != states[2]:
+            if c == 'd' and current_state != states[2]:
                 self.motor.func_left()
                 current_state = states[2]
 
-            if c == 'd' and current_state != states[3]:
+            if c == 'a' and current_state != states[3]:
                 self.motor.func_right()
                 current_state = states[3]
 
