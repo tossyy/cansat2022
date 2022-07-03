@@ -1,9 +1,13 @@
 #include <Wire.h>
 
+#define NicromOn LOW
+#define NicromOff HIGH
+
 const int SLAVE_ADDRESS = 0x8;
 
-const int CdsPin = A0;
-const int JumperPin = 13;
+const int CdsPin = A1;
+const int JumperPin = 6;
+const int Ni = 2;
 
 int CdsVal = 0;
 int JumperVal = 0;
@@ -12,9 +16,13 @@ byte data[5];
 void setup() {
   pinMode(CdsPin, INPUT);
   pinMode(JumperPin, INPUT);
+  pinMode(Ni, OUTPUT);
+
+  digitalWrite(Ni, NicromOff);
   
   Wire.begin(SLAVE_ADDRESS);
   Wire.onRequest(requestEvent);
+  Wire.onReceive(recieveEvent);
 }
 
 void requestEvent() {
@@ -27,6 +35,13 @@ void requestEvent() {
   data[4] = byte{JumperVal == HIGH};
   Wire.write(data, 5);
 }
+
+void recieveEvent(int bitstream) {
+  digitalWrite(Ni, NicromOn);
+  delay(3000);
+  digitalWrite(Ni, NicromOff);
+}
+
 
 void loop() {
 }
