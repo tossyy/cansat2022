@@ -191,6 +191,8 @@ class Machine: #機体
             if dist(latitude, longitude) < 0.01:
                 break
 
+            time.sleep(3.0)
+
         print("###################\n# phase3 finished #\n###################")
 
 
