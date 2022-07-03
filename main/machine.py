@@ -38,7 +38,6 @@ class Machine: #機体
         
 
     def phase1(self): # Phase 1。放出判定。
-        self.i2c.write_byte(0x8, 1)
         print("###################\n# phase1 start    #\n###################")
 
         '''
@@ -87,7 +86,7 @@ class Machine: #機体
                 is_continue = True
                 start_time = time.perf_counter()
             
-            time.sleep(0.3)
+            time.sleep(1)
         
         # Phase 1 が終わった時刻を記録
         self.phase1_time = time.perf_counter()
@@ -150,10 +149,11 @@ class Machine: #機体
                 break
 
             time.sleep(0.3)
-        
+        '''
         self.i2c.write_byte(0x8, 0)
         time.sleep(1)
         self.i2c.write_byte(0x8, 1)
+        '''
 
         print("###################\n# phase2 finished #\n###################")
 
