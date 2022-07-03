@@ -99,8 +99,8 @@ class Machine: #機体
         '''
         【着地判定】
         条件（以下のいずれかを満たせばOK）
-        ①20秒間、気圧変化が0.1hPa以内で、高度変化が0.1m以内
-        ②放出判定から120秒経過
+        ①8秒間、気圧変化が0.1hPa以内で、高度変化が0.2m以内
+        ②放出判定から30秒経過
         '''
 
         # 継続しているかどうかのフラグ
@@ -133,7 +133,7 @@ class Machine: #機体
                 # 時間を測る
                 tim_case1 = time.perf_counter() - start_time
 
-                if tim_case1 > 20:
+                if tim_case1 > 8:
                     print("着地判定：ケース①")
                     break
 
@@ -144,7 +144,7 @@ class Machine: #機体
 
             
             tim_case2 = time.perf_counter() - self.phase1_time
-            if tim_case2 > 120:
+            if tim_case2 > 30:
                 print("着地判定：ケース②")
                 break
 
