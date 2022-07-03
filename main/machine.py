@@ -163,7 +163,12 @@ class Machine: #機体
 
     def phase3(self): # キャリブレーション
         print("###################\n# phase3 start    #\n###################")
-
+        print("10秒前進")
+        self.motor.func_forward()
+        time.sleep(10)
+        print("1秒ブレーキ")
+        self.motor.func_brake()
+        time.sleep(3.0)
         self.nine.calibrate(self.motor)
         '''
         print("3秒前進する")
