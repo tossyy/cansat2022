@@ -266,9 +266,15 @@ class Machine: #機体
         self.motor.close()
 
     def run(self):
-        self.phase1()
-        self.phase2()
-        self.phase3()
-        self.phase4()
-        self.phase5()
-        self.close()
+        try:
+            self.phase1()
+            self.phase2()
+            self.phase3()
+            self.phase4()
+            self.phase5()
+            
+        except Exception as e:
+            print(e)
+
+        finally:
+            self.close()
