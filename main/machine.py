@@ -21,6 +21,7 @@ class Machine: #機体
 
         # モーター初期化
         self.motor = Motor()
+        self.motor.change_speed(30)
 
         # Arduino初期化
         self.arduino = Arduino(self.i2c)
@@ -169,9 +170,9 @@ class Machine: #機体
 
     def phase4(self): # キャリブレーション
         print("###################\n# phase4 start    #\n###################")
-        print("10秒前進")
+        print("5秒前進")
         self.motor.func_forward()
-        time.sleep(10)
+        time.sleep(5)
         print("1秒ブレーキ")
         self.motor.func_brake()
         time.sleep(3.0)
