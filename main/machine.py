@@ -255,7 +255,7 @@ class Machine: #機体
         latitude = statistics.mean(latitude_list)
         longitude = statistics.mean(longitude_list)
 
-        file_path = 'target_pisision.txt'
+        file_path = 'target_posision.txt'
         with open(file_path, mode='w') as f:
             f.write(str(latitude) + '\n' + str(longitude))
         
@@ -272,7 +272,7 @@ class Machine: #機体
             self.phase3()
             self.phase4()
             self.phase5()
-            
+
         except Exception as e:
             print(e)
 
