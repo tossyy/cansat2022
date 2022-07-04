@@ -6,6 +6,7 @@ import math
 import readchar
 import RPi.GPIO as GPIO
 from motor import Motor
+from arduino import Arduino
 from nine import Nine
 from pressure import Pressure
 from gps import GPS
@@ -21,6 +22,9 @@ class Machine: #機体
         # モーター初期化
         self.motor = Motor()
 
+        # Arduino初期化
+        self.arduino = Arduino(self.i2c)
+
         # 9軸センサー初期化
         self.nine = Nine(self.i2c)
 
@@ -28,13 +32,13 @@ class Machine: #機体
         self.pressure = Pressure(self.i2c)
 
         # 光センサー初期化
-        self.light = Light(self.i2c)
+        self.light = Light(self.arduino)
 
         # GPS初期化
         self.gps = GPS()
 
         # ジャンパピン初期化
-        self.jump = Jump(self.i2c)
+        self.jump = Jump(self.arduino)
         
 
     def phase1(self): # Phase 1。放出判定。
@@ -87,15 +91,12 @@ class Machine: #機体
                 start_time = time.perf_counter()
             
             time.sleep(0.3)
-        
-        #self.i2c.write_byte(0x8, 0)
-        #time.sleep(0.3)
-        #self.i2c.write_byte(0x8, 1)
-        
-        # Phase 1 が終わった時刻を記録
+
         self.phase1_time = time.perf_counter()
 
         print("###################\n# phase1 finished #\n###################")
+
+        print("###################\n# phase3 finished #\n###################")
 
     def phase2(self): # 着地判定
         print("###################\n# phase2 start    #\n###################")
@@ -153,16 +154,21 @@ class Machine: #機体
                 break
 
             time.sleep(0.3)
-        '''
-        self.i2c.write_byte(0x8, 0)
-        time.sleep(1)
-        self.i2c.write_byte(0x8, 1)
-        '''
 
         print("###################\n# phase2 finished #\n###################")
 
-    def phase3(self): # キャリブレーション
+    def phase3(self): # ニクロム線断線
         print("###################\n# phase3 start    #\n###################")
+        print("断線開始")
+        self.i2c.write_byte(self.arduino.ARDUINO_ADRESS, self.arduino.NICROM_ON)
+        time.sleep(2)
+        self.i2c.write_byte(self.arduino.ARDUINO_ADRESS, self.arduino.NICROM_OFF)
+        print("断線終了")
+        print("###################\n# phase3 finished #\n###################")
+
+
+    def phase4(self): # キャリブレーション
+        print("###################\n# phase4 start    #\n###################")
         print("10秒前進")
         self.motor.func_forward()
         time.sleep(10)
@@ -170,27 +176,11 @@ class Machine: #機体
         self.motor.func_brake()
         time.sleep(3.0)
         self.nine.calibrate(self.motor)
-        '''
-        print("3秒前進する")
-        self.motor.func_forward()
-        time.sleep(3.0)        
-        print("3秒ブレーキ")
-        self.motor.func_brake()
-        time.sleep(3.0)
-        
-        
-        print("3秒右回転する")
-        self.motor.func_right()
-        time.sleep(3.0)
-        print("3秒ブレーキ")
-        self.motor.func_brake()
-        time.sleep(3.0)
-        '''
 
-        print("###################\n# phase3 finished #\n###################")
+        print("###################\n# phase4 finished #\n###################")
 
-    def phase4(self):
-        print("###################\n# phase3 start    #\n###################")
+    def phase5(self):
+        print("###################\n# phase5 start    #\n###################")
         
         file_path = 'target_pisision.txt'
         with open(file_path, mode='r') as f:
@@ -211,7 +201,7 @@ class Machine: #機体
 
             time.sleep(3.0)
 
-        print("###################\n# phase3 finished #\n###################")
+        print("###################\n# phase5 finished #\n###################")
 
 
     def control(self):
@@ -275,4 +265,5 @@ class Machine: #機体
         self.phase2()
         self.phase3()
         self.phase4()
+        self.phase5()
         self.close()
