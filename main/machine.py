@@ -3,7 +3,6 @@ import smbus #気圧センサの管理に使います
 import time
 import statistics
 import math
-import readchar
 import RPi.GPIO as GPIO
 from motor import Motor
 from arduino import Arduino
@@ -205,40 +204,7 @@ class Machine: #機体
             time.sleep(3.0)
 
         print("###################\n# phase5 finished #\n###################")
-
-
-    def control(self):
-
-        print("-----入力開始-----")
-
-        states = ['Forward', 'Back', 'Turn Left', 'Turn Right', 'Stop']
-        current_state = 'Stop'
-
-        while True:
-            c = readchar.readkey()
-
-            if c == 'w' and current_state != states[0]:
-                self.motor.func_forward()
-                current_state = states[0]
-            
-            if c == 's' and current_state != states[1]:
-                self.motor.func_back()
-                current_state = states[1]
-            
-            if c == 'd' and current_state != states[2]:
-                self.motor.func_left()
-                current_state = states[2]
-
-            if c == 'a' and current_state != states[3]:
-                self.motor.func_right()
-                current_state = states[3]
-
-            if c == ' ' and current_state != states[4]:
-                self.motor.func_brake()
-                current_state = states[4]
-
-            if c == 'q':
-                break
+        
 
     def remember_gps(self):
         print('-----位置情報取得開始-----')
