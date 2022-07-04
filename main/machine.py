@@ -185,7 +185,7 @@ class Machine: #機体
     def phase5(self):
         print("###################\n# phase5 start    #\n###################")
         
-        file_path = 'target_pisision.txt'
+        file_path = 'target_posision.txt'
         with open(file_path, mode='r') as f:
             lines = [s.strip() for s in f.readlines()]
             target_latitude = float(lines[0])
