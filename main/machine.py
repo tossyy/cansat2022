@@ -161,9 +161,11 @@ class Machine: #機体
         print("###################\n# phase3 start    #\n###################")
         print("断線開始")
         self.i2c.write_byte(self.arduino.ARDUINO_ADRESS, self.arduino.NICROM_ON)
-        time.sleep(2)
+        time.sleep(3)
         self.i2c.write_byte(self.arduino.ARDUINO_ADRESS, self.arduino.NICROM_OFF)
         print("断線終了")
+        print("10秒待機")
+        time.sleep(10)
         print("###################\n# phase3 finished #\n###################")
 
 
