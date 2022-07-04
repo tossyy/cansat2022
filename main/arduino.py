@@ -1,6 +1,8 @@
 class Arduino:
 
     ARDUINO_ADRESS = 0x8
+    NICROM_ON = 0x0
+    NICROM_OFF = 0x1
 
     def __init__(self, i2c):
         self.i2c = i2c
