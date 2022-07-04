@@ -6,6 +6,7 @@ class Arduino:
 
     def __init__(self, i2c):
         self.i2c = i2c
+        print("i2c初期化完了")
     
     def get_light(self):
         light_val = 0

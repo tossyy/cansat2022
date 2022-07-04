@@ -40,6 +40,8 @@ class Machine: #機体
 
         # ジャンパピン初期化
         self.jump = Jump(self.arduino)
+
+        print("マシーン初期化完了")
         
 
     def phase1(self): # Phase 1。放出判定。

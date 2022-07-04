@@ -20,6 +20,8 @@ class GPS:
         self.gpsthread.daemon = True
         self.gpsthread.start() # スレッドを起動
 
+        print("GPS初期化完了")
+
     def get_position(self):
         return {'latitude': self.gps.latitude[0],
                 'longitude': self.gps.longitude[0],

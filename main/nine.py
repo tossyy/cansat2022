@@ -10,6 +10,9 @@ class Nine: #9軸センサ
 
     def __init__(self, i2c):
         self.i2c = i2c #smbus
+        self.bmx_setup()
+
+        print("9軸センサ初期化完了")
     
     def bmx_setup(self):
 

@@ -45,6 +45,8 @@ class Motor:
         self.p_a.ChangeDutyCycle(val)
         self.p_b.ChangeDutyCycle(val)
 
+        print("モーター初期化完了")
+
     #スピードを調整する関数
     def change_speed(self, val):
         self.p_a.ChangeDutyCycle(val)

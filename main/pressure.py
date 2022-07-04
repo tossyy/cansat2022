@@ -9,7 +9,9 @@ class Pressure: #気圧センサ
 
     def __init__(self, i2c):
         self.i2c = i2c
-        self.i2c.write_byte_data(self.ADDRESS, self.CTRL_REG1, 0x90) 
+        self.i2c.write_byte_data(self.ADDRESS, self.CTRL_REG1, 0x90)
+        print("気圧センサ初期化完了")
+
     
     def get_pressure(self): #2進数のまま気圧のデータを返す
         p = self.i2c.read_i2c_block_data(self.ADDRESS,self.PRESS_OUT_XL,1)
