@@ -96,8 +96,6 @@ class Machine: #機体
 
         print("###################\n# phase1 finished #\n###################")
 
-        print("###################\n# phase3 finished #\n###################")
-
     def phase2(self): # 着地判定
         print("###################\n# phase2 start    #\n###################")
 
@@ -248,6 +246,8 @@ class Machine: #機体
             position = self.gps.get_position()
             latitude_list.append(position['latitude'])
             longitude_list.append(position['longitude'])
+            print("({}, {})".format(position['latitude'], position['longitude']))
+            time.sleep(1)
         
         latitude = statistics.mean(latitude_list)
         longitude = statistics.mean(longitude_list)
