@@ -37,12 +37,19 @@ void requestEvent() {
 }
 
 void recieveEvent(int bitstream) {
-  digitalWrite(Ni, NicromOn);
-  delay(3000);
-  digitalWrite(Ni, NicromOff);
+  while(Wire.available()) {
+    char c = Wire.read();
+    switch(c) {
+      case 0x0:
+        digitalWrite(Ni, NicromOn);
+        break;
+      case 0x1:
+        digitalWrite(Ni, NicromOff);
+        break;
+    }
+  }
 }
 
 
 void loop() {
-  digitalWrite(Ni, NicromOff);
 }
