@@ -41,6 +41,11 @@ class Machine: #機体
             if c == ' ' and current_state != states[4]:
                 self.motor.func_brake()
                 current_state = states[4]
+            
+            if c == 'c':
+                self.motor.func_brake()
+                v = int(input())
+                self.motor.change_speed(v)
 
             if c == 'q':
                 break
