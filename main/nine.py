@@ -91,8 +91,8 @@ class Nine: #9軸センサ
         x_list_corrected = [v - self.correction_x for v in x_list]
         y_list_corrected = [v - self.correction_y for v in y_list]
 
-        path_raw = '../../mag_value_raw.csv'
-        path_corrected = '../../mag_value_corrected.csv'
+        path_raw = '~/utat/mag_value_raw.csv'
+        path_corrected = '~/utat/mag_value_corrected.csv'
 
         with open(path_raw, mode='w') as f:
             writer = csv.writer(f)
