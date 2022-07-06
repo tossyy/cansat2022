@@ -289,3 +289,12 @@ class Machine: #機体
 
         finally:
             self.close()
+
+if __name__ == "__main___":
+    ma = Machine()
+    try:
+        ma.phase5()
+    except Exception as e:
+        print(e)
+    finally:
+        ma.close()
