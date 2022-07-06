@@ -71,7 +71,7 @@ class Nine: #9軸センサ
 
         #15秒間，値を取る
         motor.func_right()
-        while time.perf_counter() - start_time < 15:
+        while time.perf_counter() - start_time < 30:
             mag_value = self.get_mag_value()
             x_list.append(mag_value[0])
             y_list.append(mag_value[1])
