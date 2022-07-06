@@ -76,39 +76,36 @@ scp <送信したいファイルのパス> pi@raspberrypi.local:<送信したい
 ```
 4. 実行します。
 	* **方法１**  
-		1. sshでラズパイに接続
-		2. ```bash
-			cd utat/cansat2022/main
-			python main.py
-			```
-			を実行。ログはコンソールに出力される。
-	* **方法２**
-		1. sshでラズパイに接続
-		2. ```bash
-			sudo systemctl start cansat
-			```
-			を実行。ログは`utat/log`に残る。
-	* **方法3(起動時に自動的に実行するようにする)**
-		1. sshでラズパイに接続
-		2. ```bash
-			# 自動実行有効化
-			sudo systemctl enable cansat
-			```
-			```bash
-			# 自動実行無効化
-			sudo systemctl disable cansat
-			```
-			ログは`utat/log`に残る。
+		sshでラズパイに接続し、以下を実行。ログはコンソールに出力される。
+		```bash
+		cd utat/cansat2022/main
+		python main.py
+		```
+	* **方法２**  
+	sshでラズパイに接続し、以下を実行。ログは`utat/log`に残る。
+		```bash
+		sudo systemctl start cansat
+		```	
+	* **方法3**  
+	起動時に自動的に実行するようにする。ログは`utat/log`に残る。
+		```bash
+		# 自動実行有効化
+		sudo systemctl enable cansat
+		```
+		```bash
+		# 自動実行無効化
+		sudo systemctl disable cansat
+		```
 
 ## 起動時自動実行の設定方法
 
 > [Raspberry Piでプログラムを自動起動する5種類の方法](https://qiita.com/karaage0703/items/ed18f318a1775b28eab4)
 
 1. sshでラズパイに接続
-2. ```bash
-	# 設定ファイル作成
+2. 設定ファイルを作成。
+	```bash
 	sudo nano /etc/systemd/system/cansat.service
-	```
+	```  
 	`cansat.service`の中身は以下。
 	```
 	[Unit]
@@ -125,10 +122,10 @@ scp <送信したいファイルのパス> pi@raspberrypi.local:<送信したい
 	[Install]
 	WantedBy = multi-user.target
 	```
-3. ```bash
-	# 設定ファイルをロード
+3. 設定ファイルをロード
+	```bash
 	sudo systemctl load-daemon
-	```
+	```  
 デーモンの状態は、
 ```bash
 sudo systemctl status cansat
