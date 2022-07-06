@@ -1,3 +1,4 @@
+from lib2to3.refactor import get_fixers_from_package
 import smbus #気圧センサの管理に使います
 import time
 import statistics
@@ -11,6 +12,9 @@ from light import Light
 from jump import Jump
 
 class Machine: #機体
+
+    m_par_lat = 111092.7384
+    m_par_lng = 81540.4864 #過去のものを流用
 
     def __init__(self):
         # i2c初期化
@@ -173,7 +177,7 @@ class Machine: #機体
         time.sleep(5)
         print("1秒ブレーキ")
         self.motor.func_brake()
-        time.sleep(3.0)
+        time.sleep(1)
         self.nine.calibrate(self.motor)
 
         print("###################\n# phase4 finished #\n###################")
@@ -187,7 +191,7 @@ class Machine: #機体
             target_latitude = float(lines[0])
             target_longitude = float(lines[1])
         
-        dist = lambda latitude, longitude: math.sqrt((latitude-target_latitude)**2 + (longitude-target_longitude)**2)
+        dist = lambda latitude, longitude: math.sqrt(((latitude-target_latitude)*self.m_par_lat)**2 + ((longitude-target_longitude)*self.m_par_lng)**2)
 
         while True:
             current_position = self.gps.get_position()
@@ -195,10 +199,43 @@ class Machine: #機体
             longitude = current_position['longitude']
             print("(latitude, longitude) = ({}, {})".format(latitude, longitude))
 
-            if dist(latitude, longitude) < 0.1:
+            if dist(latitude, longitude) < 5:
                 break
 
-            time.sleep(3.0)
+            dif_arg = 999
+
+            while abs(dif_arg) > math.pi/3
+                mag = self.nine.get_mag_value_corrected()
+                phai = math.arctan(((target_longitude-longitude)*self.m_par_lng) / ((target_latitude-latitude)*self.m_par_lat))
+                theta = math.arctan(mag[0]/mag[1])
+                if target_longitude-longitude < 0:
+                    phai += math.pi
+                if phai < 0:
+                    phai += 2*math.pi
+                if mag[1] < 0:
+                    theta += math.pi
+                if theta < 0:
+                    theta += 2*math.pi
+                dif_arg = phai - theta
+                if dif_arg > math.pi:
+                    dif_arg = 2*math.pi - dif_arg
+                if dif_arg < -math.pi:
+                    dif_arg = -(2*math.pi + dif_arg)
+
+                if dif_arg > 0:
+                    self.motor.func_left()
+                    time.sleep(dif_arg)
+                    self.motor.func_brake()
+                    
+                else:
+                    self.motor.func_right()
+                    time.sleep(abs(dif_arg))
+                    self.motor.func_brake()
+            
+            
+            self.motor.func_forward()
+            time.sleep(dist(latitude, longitude)/10 / 0.5) #暫定の0.5m/s。モーターのクラス変数にスピード追加して。！！！
+            self.motor.func_brake()
 
         print("###################\n# phase5 finished #\n###################")
         
