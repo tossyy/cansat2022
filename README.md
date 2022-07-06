@@ -68,13 +68,19 @@ scp <送信したいファイルのパス> pi@raspberrypi.local:<送信したい
 	* [GPSのドキュメント](https://github.com/tossyy/cansat2022/blob/master/unit_test/gps/gps_doc.md)
 2. [このスケッチ](https://github.com/tossyy/cansat2022/blob/master/unit_test/arduino/i2c_test.cpp)をArduinoに書き込んでください。
 3. RaspberryPiは以下のようなディレクトリ構造にしてください
-```
-~/
-└── utat
-	├── cansat2022
-	└── log
-```
-4. 実行します。
+	```
+	~/
+	└── utat
+		├── cansat2022
+		└── log
+	```
+4. ゴール地点のGPSの値を取得します。
+	```bash
+	cd utat/cansat2022/main
+	python remember_gps.py
+	```
+	位置情報は`utat/target_posision.txt`として保存されます。
+5. 実行します。
 	* **方法１**  
 		sshでラズパイに接続し、以下を実行。ログはコンソールに出力される。
 		```bash
