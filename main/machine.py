@@ -1,9 +1,7 @@
-from multiprocessing.dummy import current_process
 import smbus #気圧センサの管理に使います
 import time
 import statistics
 import math
-import RPi.GPIO as GPIO
 from motor import Motor
 from arduino import Arduino
 from nine import Nine
@@ -184,7 +182,7 @@ class Machine: #機体
     def phase5(self):
         print("###################\n# phase5 start    #\n###################")
         
-        file_path = 'target_posision.txt'
+        file_path = '../../target_posision.txt'
         with open(file_path, mode='r') as f:
             lines = [s.strip() for s in f.readlines()]
             target_latitude = float(lines[0])
@@ -221,7 +219,7 @@ class Machine: #機体
         latitude = statistics.mean(latitude_list)
         longitude = statistics.mean(longitude_list)
 
-        file_path = 'target_posision.txt'
+        file_path = '../../target_posision.txt'
         with open(file_path, mode='w') as f:
             f.write(str(latitude) + '\n' + str(longitude))
         
