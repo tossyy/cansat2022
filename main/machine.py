@@ -204,7 +204,7 @@ class Machine: #機体
 
             dif_arg = 999
 
-            while abs(dif_arg) > math.pi/3
+            while abs(dif_arg) > math.pi/3:
                 mag = self.nine.get_mag_value_corrected()
                 phai = math.arctan(((target_longitude-longitude)*self.m_par_lng) / ((target_latitude-latitude)*self.m_par_lat))
                 theta = math.arctan(mag[0]/mag[1])
@@ -221,6 +221,8 @@ class Machine: #機体
                     dif_arg = 2*math.pi - dif_arg
                 if dif_arg < -math.pi:
                     dif_arg = -(2*math.pi + dif_arg)
+                
+                print("φ:{}, θ:{}, φ-θ:{}, latitude:{}, longitude:{}, distance:{}".format(phai, theta, dif_arg, latitude, longitude, dist(latitude, longitude)))
 
                 if dif_arg > 0:
                     self.motor.func_left()
@@ -231,6 +233,7 @@ class Machine: #機体
                     self.motor.func_right()
                     time.sleep(abs(dif_arg))
                     self.motor.func_brake()
+                
             
             
             self.motor.func_forward()
