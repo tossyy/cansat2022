@@ -70,7 +70,6 @@ class Nine: #9軸センサ
         start_time = time.perf_counter()
 
         #15秒間，値を取る
-        motor.change_speed(50)
         motor.func_right()
         while time.perf_counter() - start_time < 15:
             mag_value = self.get_mag_value()
@@ -91,8 +90,8 @@ class Nine: #9軸センサ
         x_list_corrected = [v - self.correction_x for v in x_list]
         y_list_corrected = [v - self.correction_y for v in y_list]
 
-        path_raw = '~/utat/mag_value_raw.csv'
-        path_corrected = '~/utat/mag_value_corrected.csv'
+        path_raw = '/home/pi/utat/mag_value_raw.csv'
+        path_corrected = '/home/pi/utat/mag_value_corrected.csv'
 
         with open(path_raw, mode='w') as f:
             writer = csv.writer(f)
