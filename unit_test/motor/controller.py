@@ -1,6 +1,6 @@
 import readchar
 import sys
-sys.path.append('../../main')
+sys.path.append('../main')
 from motor import Motor
 
 class Machine: #機体
