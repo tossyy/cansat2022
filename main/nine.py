@@ -1,5 +1,5 @@
-import smbus #気圧センサの管理に使います
 import time #時間間隔に使います
+import csv
 
 class Nine: #9軸センサ
 
@@ -30,7 +30,7 @@ class Nine: #9軸センサ
     
     def get_mag_value(self):
         data = [0, 0, 0, 0, 0, 0, 0, 0]
-        mag_data = [0.0, 0.0, 0.0]
+        mag_value = [0.0, 0.0, 0.0]
 
         try:
             for i in range(8):
@@ -38,54 +38,71 @@ class Nine: #9軸センサ
 
             for i in range(3):
                 if i != 2:
-                    mag_data[i] = ((data[2*i + 1] * 256) + (data[2*i] & 0xF8)) / 8
-                    if mag_data[i] > 4095:
-                        mag_data[i] -= 8192
+                    mag_value[i] = ((data[2*i + 1] * 256) + (data[2*i] & 0xF8)) / 8
+                    if mag_value[i] > 4095:
+                        mag_value[i] -= 8192
                 else:
-                    mag_data[i] = ((data[2*i + 1] * 256) + (data[2*i] & 0xFE)) / 2
-                    if mag_data[i] > 16383:
-                        mag_data[i] -= 32768
+                    mag_value[i] = ((data[2*i + 1] * 256) + (data[2*i] & 0xFE)) / 2
+                    if mag_value[i] > 16383:
+                        mag_value[i] -= 32768
 
         except IOError as e:
             print("I/O error({0}): {1}".format(e.errno, e.strerror))
 
-        self.mag_value = [mag_data[0]-self.correction_x, mag_data[1]-self.correction_y, mag_data[2]] #補正
-        return self.mag_value
-
-    def cul_centergravity(self, x, y):
-        return [sum(x)/len(x), sum(y)/len(y)]
+        return mag_value
     
+    def get_mag_value_corrected(self):
+        mag_value = self.get_mag_value()
+        mag_value_corrected = [mag_value[0]-self.correction_x, mag_value[1]-self.correction_y, mag_value[2]]
+
+        return mag_value_corrected
+
+
     def calibrate(self, motor):
         print("caliblation start")
-        self.motor = motor
-        x = []
-        y = []
-        g_x = []
-        g_y = []
+        x_list = []
+        y_list = []
+        gx_list = []
+        gy_list = []
+        interval = 0.3
+        around_time = 3
+        N = int(around_time/interval)
         start_time = time.perf_counter()
 
-        #10秒間，値を取る
+        #15秒間，値を取る
         motor.change_speed(50)
         motor.func_right()
         while time.perf_counter() - start_time < 15:
-            mag = self.get_mag_value()
-            x.append(mag[0])
-            y.append(mag[1])
-
-            #ある程度きたら，重心を撮り続ける
-            if time.perf_counter() - start_time > 2:
-                g_x.append(self.cul_centergravity(x, y)[0])
-                g_y.append(self.cul_centergravity(x, y)[1])
-            time.sleep(0.3)
+            mag_value = self.get_mag_value()
+            x_list.append(mag_value[0])
+            y_list.append(mag_value[1])
+            
+            time.sleep(interval)
         
         motor.func_brake()
         
-        #g_yが一番大きくなるインデックスをとる。
-        max_index = g_y.index(max(g_y)) 
-        #一週
-        #周くらいしたときに重心が一番上よりなものを補正とする
-        self.correction_x = g_x[max_index]
-        self.correction_y = g_y[max_index]
+        for i in range(len(x_list)-N):
+            gx_list.append(sum(x_list[i:i+N])/ N)
+            gy_list.append(sum(y_list[i:i+N])/ N)
+        
+        self.correction_x = sum(gx_list) / len(gx_list)
+        self.correction_y = sum(gy_list) / len(gy_list)
+
+        x_list_corrected = [v - self.correction_x for v in x_list]
+        y_list_corrected = [v - self.correction_y for v in y_list]
+
+        path_raw = '../../mag_value_raw.csv'
+        path_corrected = '../../mag_value_corrected.csv'
+
+        with open(path_raw, mode='w') as f:
+            writer = csv.writer(f)
+            for x,y in zip(x_list, y_list):
+                writer.writerow([x, y])
+        
+        with open(path_corrected, mode='w') as f:
+            writer = csv.writer(f)
+            for x,y in zip(x_list_corrected, y_list_corrected):
+                writer.writerow([x, y])
 
         print("caliblation finish")
 
