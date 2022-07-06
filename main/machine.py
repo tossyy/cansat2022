@@ -233,7 +233,7 @@ class Machine: #機体
                     time.sleep(abs(dif_arg))
                     self.motor.func_brake()
                 
-            
+                time.sleep(1)
             
             self.motor.func_forward()
             time.sleep(dist(latitude, longitude)/10 / 0.5) #暫定の0.5m/s。モーターのクラス変数にスピード追加して。！！！
