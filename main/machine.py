@@ -1,4 +1,3 @@
-from lib2to3.refactor import get_fixers_from_package
 import smbus #気圧センサの管理に使います
 import time
 import statistics
