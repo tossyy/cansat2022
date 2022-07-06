@@ -31,11 +31,11 @@ class Machine: #機体
                 current_state = states[1]
             
             if c == 'd' and current_state != states[2]:
-                self.motor.func_left()
+                self.motor.func_right()
                 current_state = states[2]
 
             if c == 'a' and current_state != states[3]:
-                self.motor.func_right()
+                self.motor.func_left()
                 current_state = states[3]
 
             if c == ' ' and current_state != states[4]:
