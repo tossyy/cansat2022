@@ -44,7 +44,7 @@ class Machine: #機体
             
             if c == 'c':
                 self.motor.func_brake()
-                v = int(input())
+                v = int(input("変更後のスピード:"))
                 self.motor.change_speed(v)
 
             if c == 'q':
