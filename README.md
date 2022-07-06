@@ -1,6 +1,6 @@
 # <span style="color : #7cfc00"> cansat2022 </span>
 
-## <span style="color : #00ffff"> RaspberryPiの基本設定 </span>
+## RaspberryPiの基本設定
 
 1. Raspbianを公式サイトからインストール
 2. SDカードフォーマッタをダウンロード
@@ -45,7 +45,7 @@
 8. 質問にyesと答える。
 9. パスワードを入力（今回はcansat。デフォだとraspberry。これもOSをSDカードに焼く時の設定から決められる）
 
-## <span style="color : #00ffff"> 使うかもしれないコマンド </span>
+## 使うかもしれないコマンド
 
 * パスワードの変更　　`sudo passwd <user name>`  
 新しいパスワードを聞かれるので次回以降使いたいパスワードを入力。  
@@ -54,14 +54,14 @@
 * 再起動　　`sudo shutdown -r now`  
 * シャットダウン　　`sudo shutdown -h now`  
 
-## <span style="color : #00ffff"> 開発の進め方 </span>
+## 開発の進め方
 
 基本はpythonで書きます。ラズパイではcodeが使えないのでやりにくいと思います。PCの方でファイルを作って、scpで送信しましょう。  
 ```bash
 scp <送信したいファイルのパス> pi@raspberrypi.local:<送信したい場所のパス>
 ```
 
-## <span style="color : #00ffff"> プログラムの実行方法 </span>
+## プログラムの実行方法
 
 1. RaspberryPiの環境を整えてください。以下のドキュメントを参照してください。
 	* [I2Cのドキュメント](https://github.com/tossyy/cansat2022/blob/master/unit_test/i2c/I2C.md)
@@ -74,12 +74,63 @@ scp <送信したいファイルのパス> pi@raspberrypi.local:<送信したい
 	├── cansat2022
 	└── log
 ```
-4. `cansat2022/main/main.py`を実行します。
-	* 方法１【RaspberryPiの起動と同時にファイルが実行されるようにする】
-		`/etc/rc.local`に
-		```bash
-		python ~/utat/cansat2022/main/main.py 1> ~/utat/log/log.txt 2> ~/utat/log/error.txt
-		```
-		と書き込む。
-		> [Raspberry Piでプログラムを自動起動する5種類の方法](https://qiita.com/karaage0703/items/ed18f318a1775b28eab4)
-	* 方法２【RaspberryPiにパソコンからSSH接続して実行】
+4. 実行します。
+	* **方法１**  
+		1. sshでラズパイに接続
+		2. ```bash
+			cd utat/cansat2022/main
+			python main.py
+			```
+			を実行。ログはコンソールに出力される。
+	* **方法２**
+		1. sshでラズパイに接続
+		2. ```bash
+			sudo systemctl start cansat
+			```
+			を実行。ログは`utat/log`に残る。
+	* **方法3(起動時に自動的に実行するようにする)**
+		1. sshでラズパイに接続
+		2. ```bash
+			# 自動実行有効化
+			sudo systemctl enable cansat
+			```
+			```bash
+			# 自動実行無効化
+			sudo systemctl disable cansat
+			```
+			ログは`utat/log`に残る。
+
+## 起動時自動実行の設定方法
+
+> [Raspberry Piでプログラムを自動起動する5種類の方法](https://qiita.com/karaage0703/items/ed18f318a1775b28eab4)
+
+1. sshでラズパイに接続
+2. ```bash
+	# 設定ファイル作成
+	sudo nano /etc/systemd/system/cansat.service
+	```
+	`cansat.service`の中身は以下。
+	```
+	[Unit]
+	Description = cansat daemon
+	
+	[Service]
+	Type = simple
+	Restart = no
+	WorkingDirectory = /home/pi/utat/cansat2022/main
+	ExecStart = /usr/bin/python /home/pi/utat/cansat2022/main/main.py
+	StandardOutput = /home/pi/utat/log/log.txt
+	ErrorOutput = /home/pi/utat/log/error.txt
+	
+	[Install]
+	WantedBy = multi-user.target
+	```
+3. ```bash
+	# 設定ファイルをロード
+	sudo systemctl load-daemon
+	```
+デーモンの状態は、
+```bash
+sudo systemctl status cansat
+```
+で確認できる。
