@@ -39,7 +39,7 @@ class Motor:
 
         #デューティを設定(0~100の範囲で指定)
         #速度は80%で走行する。
-        val = 80
+        val = 50
 
         #デューティ比を設定
         self.p_a.ChangeDutyCycle(val)
