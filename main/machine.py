@@ -185,7 +185,7 @@ class Machine: #機体
     def phase5(self):
         print("###################\n# phase5 start    #\n###################")
         
-        file_path = '../../target_posision.txt'
+        file_path = '/home/pi/utat/target_posision.txt'
         with open(file_path, mode='r') as f:
             lines = [s.strip() for s in f.readlines()]
             target_latitude = float(lines[0])
@@ -247,15 +247,23 @@ class Machine: #機体
 
         for i in range(10):
             position = self.gps.get_position()
-            latitude_list.append(position['latitude'])
-            longitude_list.append(position['longitude'])
+            lat = position['latitude']
+            lon = position['longitude']
+            if lat != 0 and lon != 0:
+                latitude_list.append(lat)
+                longitude_list.append(lon)
             print("({}, {})".format(position['latitude'], position['longitude']))
             time.sleep(1)
         
-        latitude = statistics.mean(latitude_list)
-        longitude = statistics.mean(longitude_list)
+        if latitude_list != [] and longitude_list != []:
+            latitude = statistics.mean(latitude_list)
+            longitude = statistics.mean(longitude_list)
+        else:
+            latitude = 0
+            longitude = 0
 
-        file_path = '../../target_posision.txt'
+
+        file_path = '/home/pi/utat/target_posision.txt'
         with open(file_path, mode='w') as f:
             f.write(str(latitude) + '\n' + str(longitude))
         
