@@ -206,8 +206,8 @@ class Machine: #機体
 
             while abs(dif_arg) > math.pi/3:
                 mag = self.nine.get_mag_value_corrected()
-                phai = math.arctan(((target_longitude-longitude)*self.m_par_lng) / ((target_latitude-latitude)*self.m_par_lat))
-                theta = math.arctan(mag[0]/mag[1])
+                phai = math.atan(((target_longitude-longitude)*self.m_par_lng) / ((target_latitude-latitude)*self.m_par_lat))
+                theta = math.atan(mag[0]/mag[1])
                 if target_longitude-longitude < 0:
                     phai += math.pi
                 if phai < 0:
@@ -290,9 +290,10 @@ class Machine: #機体
         finally:
             self.close()
 
-if __name__ == "__main___":
+if __name__ == "__main__":
     ma = Machine()
     try:
+        time.sleep(5)
         ma.phase5()
     except Exception as e:
         print(e)
