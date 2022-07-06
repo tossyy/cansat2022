@@ -18,7 +18,6 @@ class Machine: #機体
 
         # モーター初期化
         self.motor = Motor()
-        self.motor.change_speed(30)
 
         # Arduino初期化
         self.arduino = Arduino(self.i2c)
