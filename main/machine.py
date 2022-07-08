@@ -205,7 +205,7 @@ class Machine: #機体
 
             while abs(dif_arg) > math.pi/3:
                 mag = self.nine.get_mag_value_corrected()
-                phai = math.atan(((target_longitude-longitude)*self.m_par_lng) / ((target_latitude-latitude)*self.m_par_lat))
+                phai = math.atan(((target_latitude-latitude)*self.m_par_lat) / ((target_longitude-longitude)*self.m_par_lng))
                 theta = math.atan(mag[0]/mag[1])
                 if target_longitude-longitude < 0:
                     phai += math.pi
