@@ -14,7 +14,7 @@ PRESS_OUT_H = 0x2A #上位ビット
 #Lセンサーの設定
 i2c.write_byte_data(address, CTRL_REG1, 0x90)
 
-for i in range(10):
+while True:
     #データの読み込み
     pxl = i2c.read_byte_data(address, PRESS_OUT_XL)
     pl = i2c.read_byte_data(address, PRESS_OUT_L)
