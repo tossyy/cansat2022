@@ -1,15 +1,15 @@
 void setup() {
-  Serial.begin(9600);
+  Serial1.begin(9600);
 }
 
 void loop() {
-  if (Serial.available() > 3) {
+  if (Serial1.available() > 3) {
     char buf[4];
-    Serial.readBytes(buf, 4);
-    Serial.println("");
-    Serial.println("Echo back from Arduino to XBee....");
-    Serial.print("'");
-    Serial.print(buf);
-    Serial.println("'");
+    Serial1.readBytes(buf, 4);
+    Serial1.println("");
+    Serial1.println("Echo back from Arduino to XBee....");
+    Serial1.print("'");
+    Serial1.print(buf);
+    Serial1.println("'");
   }
 }
