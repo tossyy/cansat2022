@@ -198,7 +198,7 @@ class Machine: #機体
             longitude = current_position['longitude']
             print("(latitude, longitude) = ({}, {})".format(latitude, longitude))
 
-            if dist(latitude, longitude) < 5:
+            if dist(latitude, longitude) < 3:
                 break
 
             dif_arg = 999
@@ -297,9 +297,7 @@ if __name__ == "__main__":
     ma = Machine()
     try:
         time.sleep(5)
-        ma.motor.change_speed(40)
         ma.nine.calibrate(ma.motor)
-        ma.motor.change_speed(90)
         ma.phase5()
     except Exception as e:
         print(e)
