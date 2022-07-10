@@ -223,6 +223,7 @@ class Machine: #機体
                 
                 print("φ:{}, θ:{}, φ-θ:{}, latitude:{}, longitude:{}, distance:{}".format(phai, theta, dif_arg, latitude, longitude, dist(latitude, longitude)))
 
+                self.motor.change_speed(40)
                 if dif_arg > 0:
                     self.motor.func_left()
                     time.sleep(dif_arg)
@@ -232,6 +233,9 @@ class Machine: #機体
                     self.motor.func_right()
                     time.sleep(abs(dif_arg))
                     self.motor.func_brake()
+                    
+                self.motor.change_speed(90)
+
                 
                 time.sleep(1)
             
@@ -293,6 +297,9 @@ if __name__ == "__main__":
     ma = Machine()
     try:
         time.sleep(5)
+        ma.motor.change_speed(40)
+        ma.nine.calibrate(ma.motor)
+        ma.motor.change_speed(90)
         ma.phase5()
     except Exception as e:
         print(e)
