@@ -203,7 +203,7 @@ class Machine: #機体
 
             dif_arg = 999
 
-            while abs(dif_arg) > math.pi/3:
+            while abs(dif_arg) > math.pi/6:
                 mag = self.nine.get_mag_value_corrected()
                 phai = math.atan(((target_latitude-latitude)*self.m_par_lat) / ((target_longitude-longitude)*self.m_par_lng))
                 theta = math.atan(mag[0]/mag[1])
