@@ -7,7 +7,7 @@
 I2C通信を行うときに`smbus`ライブラリを用いる。
 ```bash
 sudo apt-get install python-smbus
-sudo apt-get install pytho3-smbus
+sudo apt-get install python3-smbus
 ```
 ##  機器のアドレス
 説明書を参考のこと。今回用いた気圧センサ（AE-LPS25HB）では、  
