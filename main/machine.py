@@ -16,6 +16,10 @@ class Machine: #機体
     m_par_lng = 81540.4864 #過去のものを流用
 
     def __init__(self):
+
+        # 開始時間を記録
+        self.start_time = time.perf_counter()
+
         # i2c初期化
         self.i2c = smbus.SMBus(1)
 
@@ -67,7 +71,7 @@ class Machine: #機体
             # 値を取得し出力
             light_val = self.light.get_val()
             jump_is_off = self.jump.is_off()
-            print("光センサ:{:3}, ジャンパピン:{}, 継続:{}".format(light_val, jump_is_off, is_continue))
+            print("{:5.1f}| 光センサ:{:>3d}, ジャンパピン:{}, 継続:{}".format(time.perf_counter()-self.start_time, light_val, jump_is_off, is_continue))
             
             if is_continue:
 
@@ -121,7 +125,7 @@ class Machine: #機体
             # 値を取得し出力
             pressure_val = self.pressure.get_pressure()
             altitude_val = self.gps.get_position()['altitude']
-            print("気圧:{:.3f}, 高度:{}, 継続:{}".format(pressure_val, altitude_val, is_continue))
+            print("{:5.1f}| 気圧:{:7.3f}, 高度:{:6.3f}, 継続:{}".format(time.perf_counter()-self.start_time, pressure_val, altitude_val, is_continue))
 
             pressure_list.append(pressure_val)
             altitude_list.append(altitude_val)
@@ -196,7 +200,6 @@ class Machine: #機体
             current_position = self.gps.get_position()
             latitude = current_position['latitude']
             longitude = current_position['longitude']
-            print("(latitude, longitude) = ({}, {})".format(latitude, longitude))
 
             if dist(latitude, longitude) < 1:
                 break
