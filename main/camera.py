@@ -49,7 +49,7 @@ class Camera:
         res['percent'] = percent[max_index]
         res['center'] = centroids[max_index]
         
-        return percent[max_index], centroids[max_index]
+        return res
 
 
 
