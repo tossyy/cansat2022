@@ -1,6 +1,7 @@
 import picamera
 import cv2
 import numpy as np
+import time
 
 class Camera:
     
@@ -51,3 +52,29 @@ class Camera:
         return percent[max_index], centroids[max_index]
 
 
+
+if __name__ == "__main__":
+    camera = Camera()
+    
+    file_No = 0
+    while True:
+        file_path = '/home/pi/utat/img/image{:>03d}.jpg'.format(file_No)
+        file_No += 1
+
+        camera.take_pic(file_path) # 写真を撮る
+        res = camera.detect_center(file_path) # 赤の最大領域の占有率と重心を求める
+
+        if res['percent'] < 0.005: # 赤の領域が少ない場合は、旋回する
+            print('too little')
+            continue
+
+        if res['percent'] > 0.5: # 赤の領域が大きい場合は、終了する
+            print('enough')
+            break
+
+        dif_arg = (res['width']/2 - res['center'][0]) / res['width'] * np.pi/3
+
+        # ログの出力
+        print('res={}, dif_arg={}'.format(res, dif_arg))
+        
+        time.sleep(1)
