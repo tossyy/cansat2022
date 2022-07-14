@@ -62,6 +62,7 @@ if __name__ == "__main__":
         file_No += 1
 
         camera.take_pic(file_path) # 写真を撮る
+        print("took pic: {}".format(file_path))
         res = camera.detect_center(file_path) # 赤の最大領域の占有率と重心を求める
 
         if res['percent'] < 0.005: # 赤の領域が少ない場合は、旋回する
