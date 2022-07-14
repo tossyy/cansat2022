@@ -44,8 +44,8 @@ class Camera:
         labels = np.delete(labels, obj=0, axis=0)
         stats = np.delete(stats, obj=0, axis=0)
         centroids = np.delete(centroids, obj=0, axis=0)
-        centroids[:,0] = centroids[:,0] / width
-        centroids[:,1] = centroids[:,1] / height
+        centroids[:,0] = (width/2 - centroids[:,0]) / width*2
+        centroids[:,1] = (height/2 - centroids[:,1]) / height*2
         percent = stats[:,4] / (height*width)
         
         res = {}
@@ -60,6 +60,7 @@ class Camera:
             res['width'] = width
             res['percent'] = percent[max_index]
             res['center'] = centroids[max_index]
+            self.save_detected_img(file_path, img, res['center'])
         
         return res
 
@@ -84,7 +85,7 @@ if __name__ == "__main__":
             print('enough')
             break
 
-        dif_arg = (res['width']/2 - res['center'][0]) / res['width'] * np.pi/3
+        dif_arg = res['center'][0] * np.pi/6
 
         # ログの出力
         print('percent={}, center={}, dif_arg={}'.format(res['percent'], res['center'], dif_arg))
