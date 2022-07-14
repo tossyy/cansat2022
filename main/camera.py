@@ -45,7 +45,8 @@ class Camera:
         stats = np.delete(stats, obj=0, axis=0)
         centroids = np.delete(centroids, obj=0, axis=0)
         percent = stats[:,4] / (height*width)
-
+        
+        res = {}
         if nlabels == 0:
             res['height'] = None
             res['width'] = None
@@ -53,7 +54,6 @@ class Camera:
             res['center'] = None
         else:
             max_index = np.argmax(percent)
-            res = {}
             res['height'] = height
             res['width'] = width
             res['percent'] = percent[max_index]
