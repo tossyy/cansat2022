@@ -258,10 +258,12 @@ class Machine: #機体
             file_path = '/home/pi/utat/img/image{:>03d}.jpg'.format(file_No)
             file_No += 1
 
+            print("taking pic...: {}".format(file_path))
             self.camera.take_pic(file_path) # 写真を撮る
             res = self.camera.detect_center(file_path) # 赤の最大領域の占有率と重心を求める
 
             if res['percent'] < 0.005: # 赤の領域が少ない場合は、旋回する
+                print("赤の領域微小のため右に3秒旋回")
                 self.motor.change_speed(40)
                 self.motor.func_right()
                 time.sleep(3)
@@ -270,12 +272,14 @@ class Machine: #機体
                 continue
 
             if res['percent'] > 0.5: # 赤の領域が大きい場合は、終了する
+                print("赤の領域が50%以上となったため終了")
                 break
 
-            dif_arg = (res['width']/2 - res['center'][0]) / res['width'] * math.pi/3
+            # 旋回すべき角度
+            dif_arg = res['center'][0] * math.pi/6
 
             # ログの出力
-            print('res={}, dif_arg={}'.format(res, dif_arg))
+            print('percent={}, center={}, dif_arg={}'.format(res['percent'], res['center'], dif_arg))
             
             # ずれ角度に合わせて旋回する
             self.motor.change_speed(40)
@@ -293,6 +297,7 @@ class Machine: #機体
             # 前進する
             self.motor.func_forward()
             time.sleep(0.1 / res['percent'])
+            self.motor.func_brake()
 
         print("###################\n# phase6 finished #\n###################")
 
