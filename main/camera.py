@@ -1,3 +1,4 @@
+from types import NoneType
 import picamera
 import cv2
 import numpy as np
@@ -11,6 +12,11 @@ class Camera:
     
     def take_pic(self, file_path):
         self.camera.capture(file_path)
+
+    def save_detected_img(file_path, img, center):
+        cv2.circle(img, (center[0], center[1]), 30, (0, 200, 0),
+                thickness=3, lineType=cv2.LINE_AA)
+        cv2.imwrite(file_path, img)
 
     def detect_center(self, file_path):
         img = cv2.imread(file_path) # 画像を読み込む
@@ -41,16 +47,20 @@ class Camera:
         centroids = np.delete(centroids, obj=0, axis=0)
         percent = stats[:,4] / (height*width)
 
-        max_index = np.argmax(percent)
-
-        res = {}
-        res['height'] = height
-        res['width'] = width
-        res['percent'] = percent[max_index]
-        res['center'] = centroids[max_index]
+        if nlabels == 0:
+            res['height'] = None
+            res['width'] = None
+            res['percent'] = None
+            res['center'] = None
+        else:
+            max_index = np.argmax(percent)
+            res = {}
+            res['height'] = height
+            res['width'] = width
+            res['percent'] = percent[max_index]
+            res['center'] = centroids[max_index]
         
         return res
-
 
 
 if __name__ == "__main__":
@@ -76,6 +86,6 @@ if __name__ == "__main__":
         dif_arg = (res['width']/2 - res['center'][0]) / res['width'] * np.pi/3
 
         # ログの出力
-        print('res={}, dif_arg={}'.format(res, dif_arg))
+        print('percent={}, center={}, dif_arg={}'.format(res['percent'], res['center'], dif_arg))
         
         time.sleep(1)
