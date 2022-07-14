@@ -12,7 +12,7 @@ class Camera:
     def take_pic(self, file_path):
         self.camera.capture(file_path)
 
-    def save_detected_img(file_path, img, center):
+    def save_detected_img(self, file_path, img, center):
         cv2.circle(img, (center[0], center[1]), 30, (0, 200, 0),
                 thickness=3, lineType=cv2.LINE_AA)
         cv2.imwrite(file_path, img)
