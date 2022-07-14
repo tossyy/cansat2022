@@ -52,7 +52,7 @@ class Camera:
         if nlabels == 0:
             res['height'] = None
             res['width'] = None
-            res['percent'] = None
+            res['percent'] = 0
             res['center'] = None
         else:
             max_index = np.argmax(percent)
