@@ -385,6 +385,7 @@ class Machine: #機体
             self.phase3()
             self.phase4()
             self.phase5()
+            self.phase6()
 
         except Exception as e:
             print(e)
