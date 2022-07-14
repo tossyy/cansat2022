@@ -3,6 +3,7 @@ import smbus #気圧センサの管理に使います
 import time
 import statistics
 import math
+import csv
 from motor import Motor
 from arduino import Arduino
 from nine import Nine
@@ -186,7 +187,7 @@ class Machine: #機体
         print("1秒ブレーキ")
         self.motor.func_brake()
         time.sleep(1)
-        self.nine.calibrate(self.motor)
+        self.calibrate()
 
         print("###################\n# phase4 finished #\n###################")
 
@@ -251,6 +252,7 @@ class Machine: #機体
         print("###################\n# phase5 finished #\n###################")
 
     def phase6(self): # キャメラ
+        print("###################\n# phase6 start    #\n###################")
         file_No = 0
         while True:
             file_path = '/home/pi/utat/img/image{:>03d}.jpg'.format(file_No)
@@ -291,6 +293,56 @@ class Machine: #機体
             # 前進する
             self.motor.func_forward()
             time.sleep(0.1 / res['percent'])
+
+        print("###################\n# phase6 finished #\n###################")
+
+    def calibrate(self):
+        print("caliblation start")
+        x_list = []
+        y_list = []
+        gx_list = []
+        gy_list = []
+        interval = 0.3
+        around_time = 3
+        N = int(around_time/interval)
+        start_time = time.perf_counter()
+
+        #15秒間，値を取る
+        self.motor.change_speed(90)
+        self.motor.func_right()
+        while time.perf_counter() - start_time < 15:
+            mag_value = self.nine.get_mag_value()
+            x_list.append(mag_value[0])
+            y_list.append(mag_value[1])
+            
+            time.sleep(interval)
+        
+        self.motor.func_brake()
+        
+        for i in range(len(x_list)-N):
+            gx_list.append(sum(x_list[i:i+N])/ N)
+            gy_list.append(sum(y_list[i:i+N])/ N)
+        
+        self.nine.correction_x = sum(gx_list) / len(gx_list)
+        self.nine.correction_y = sum(gy_list) / len(gy_list)
+
+        x_list_corrected = [v - self.nine.correction_x for v in x_list]
+        y_list_corrected = [v - self.nine.correction_y for v in y_list]
+
+        path_raw = '/home/pi/utat/mag_value_raw.csv'
+        path_corrected = '/home/pi/utat/mag_value_corrected.csv'
+
+        with open(path_raw, mode='w') as f:
+            writer = csv.writer(f)
+            for x,y in zip(x_list, y_list):
+                writer.writerow([x, y])
+        
+        with open(path_corrected, mode='w') as f:
+            writer = csv.writer(f)
+            for x,y in zip(x_list_corrected, y_list_corrected):
+                writer.writerow([x, y])
+
+        print("caliblation finish")
 
 
     def remember_gps(self):
@@ -344,7 +396,7 @@ if __name__ == "__main__":
     ma = Machine()
     try:
         time.sleep(5)
-        ma.nine.calibrate(ma.motor)
+        ma.calibrate()
         ma.phase5()
     except Exception as e:
         print(e)

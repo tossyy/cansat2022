@@ -58,53 +58,5 @@ class Nine: #9軸センサ
         return mag_value_corrected
 
 
-    def calibrate(self, motor):
-        print("caliblation start")
-        x_list = []
-        y_list = []
-        gx_list = []
-        gy_list = []
-        interval = 0.3
-        around_time = 3
-        N = int(around_time/interval)
-        start_time = time.perf_counter()
-
-        #15秒間，値を取る
-        motor.func_right()
-        while time.perf_counter() - start_time < 15:
-            mag_value = self.get_mag_value()
-            x_list.append(mag_value[0])
-            y_list.append(mag_value[1])
-            
-            time.sleep(interval)
-        
-        motor.func_brake()
-        
-        for i in range(len(x_list)-N):
-            gx_list.append(sum(x_list[i:i+N])/ N)
-            gy_list.append(sum(y_list[i:i+N])/ N)
-        
-        self.correction_x = sum(gx_list) / len(gx_list)
-        self.correction_y = sum(gy_list) / len(gy_list)
-
-        x_list_corrected = [v - self.correction_x for v in x_list]
-        y_list_corrected = [v - self.correction_y for v in y_list]
-
-        path_raw = '/home/pi/utat/mag_value_raw.csv'
-        path_corrected = '/home/pi/utat/mag_value_corrected.csv'
-
-        with open(path_raw, mode='w') as f:
-            writer = csv.writer(f)
-            for x,y in zip(x_list, y_list):
-                writer.writerow([x, y])
-        
-        with open(path_corrected, mode='w') as f:
-            writer = csv.writer(f)
-            for x,y in zip(x_list_corrected, y_list_corrected):
-                writer.writerow([x, y])
-
-        print("caliblation finish")
-
-
 
 
