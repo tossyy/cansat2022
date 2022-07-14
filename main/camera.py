@@ -1,4 +1,3 @@
-from types import NoneType
 import picamera
 import cv2
 import numpy as np
