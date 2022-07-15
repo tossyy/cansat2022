@@ -48,7 +48,7 @@ class Machine: #機体
         self.jump = Jump(self.arduino)
 
         # キャメラ初期化
-        # self.camera = Camera()
+        self.camera = Camera()
 
         print("マシーン初期化完了")
         
