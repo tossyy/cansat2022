@@ -352,6 +352,7 @@ class Machine: #機体
 
     def remember_gps(self):
         print('-----位置情報取得開始-----')
+        time.sleep(5)
         latitude_list = []
         longitude_list = []
 
