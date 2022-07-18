@@ -1,4 +1,3 @@
-from fileinput import fileno
 import smbus #気圧センサの管理に使います
 import time
 import statistics
@@ -72,12 +71,17 @@ class Machine: #機体
         # 光を検知し始めた時間
         start_time = 0
 
+        # センサーの取得値を保存する配列
+        phase1_data = []
+        phase1_data.append(['time_stamp', 'light_val', 'jump_val', 'jump_is_off', 'is_continue'])
 
         while True:
             # 値を取得し出力
             light_val = self.light.get_val()
             jump_is_off = self.jump.is_off()
-            print("{:5.1f}| 光センサ:{:>3d}, ジャンパピン:{}, 継続:{}".format(time.perf_counter()-self.start_time, light_val, jump_is_off, is_continue))
+            time_stamp = time.perf_counter()-self.start_time
+            print("{:5.1f}| 光センサ:{:>3d}, ジャンパピン:{}, 継続:{}".format(time_stamp, light_val, jump_is_off, is_continue))
+            phase1_data.append([time_stamp, light_val, int(jump_is_off), int(is_continue)])
             
             if is_continue:
 
@@ -106,6 +110,10 @@ class Machine: #機体
 
         self.phase1_time = time.perf_counter()
 
+        with open('/home/pi/utat/log/phase1.csv', 'w') as f:
+            writer = csv.writer(f, lineterminator='\n')
+            writer.writerows(phase1_data)
+
         print("###################\n# phase1 finished #\n###################")
 
     def phase2(self): # 着地判定
@@ -127,11 +135,18 @@ class Machine: #機体
         pressure_list = []
         altitude_list = []
 
+        # センサーの取得値を保存する配列
+        phase2_data = []
+        phase2_data.append(['time_stamp', 'pressure_val', 'altitude_val', 'is_continue'])
+
         while True:
             # 値を取得し出力
             pressure_val = self.pressure.get_pressure()
             altitude_val = self.gps.get_position()['altitude']
-            print("{:5.1f}| 気圧:{:7.3f}, 高度:{:6.3f}, 継続:{}".format(time.perf_counter()-self.start_time, pressure_val, altitude_val, is_continue))
+            time_stamp = time.perf_counter()-self.start_time
+            print("{:5.1f}| 気圧:{:7.3f}, 高度:{:6.3f}, 継続:{}".format(time_stamp, pressure_val, altitude_val, is_continue))
+            phase2_data.append([time_stamp, pressure_val, altitude_val, int(is_continue)])
+
 
             pressure_list.append(pressure_val)
             altitude_list.append(altitude_val)
@@ -165,6 +180,10 @@ class Machine: #機体
 
             time.sleep(0.3)
 
+        with open('/home/pi/utat/log/phase2.csv', 'w') as f:
+            writer = csv.writer(f, lineterminator='\n')
+            writer.writerows(phase2_data)
+
         print("###################\n# phase2 finished #\n###################")
 
     def phase3(self): # ニクロム線断線
@@ -193,6 +212,10 @@ class Machine: #機体
 
     def phase5(self):
         print("###################\n# phase5 start    #\n###################")
+
+        # センサーの取得値を保存する配列
+        phase5_data = []
+        phase5_data.append(['time_stamp', 'latitude', 'longitude', 'theta'])
         
         file_path = '/home/pi/utat/target_posision.txt'
         with open(file_path, mode='r') as f:
@@ -230,7 +253,9 @@ class Machine: #機体
                 if dif_arg < -math.pi:
                     dif_arg = -(2*math.pi + dif_arg)
                 
-                print("φ:{}, θ:{}, φ-θ:{}, latitude:{}, longitude:{}, distance:{}".format(phai, theta, dif_arg, latitude, longitude, dist(latitude, longitude)))
+                time_stamp = time.perf_counter()-self.start_time
+                print("{:5.1f}| φ:{}, θ:{}, φ-θ:{}, latitude:{}, longitude:{}, distance:{}".format(time_stamp, phai, theta, dif_arg, latitude, longitude, dist(latitude, longitude)))
+                phase5_data.append([time_stamp, latitude, longitude, theta])
 
                 self.motor.change_speed(40)
                 if dif_arg > 0:
@@ -248,6 +273,11 @@ class Machine: #機体
             self.motor.func_forward()
             time.sleep(dist(latitude, longitude)/10 / 0.5) #暫定の0.5m/s。モーターのクラス変数にスピード追加して。！！！
             self.motor.func_brake()
+
+
+        with open('/home/pi/utat/log/phase5.csv', 'w') as f:
+            writer = csv.writer(f, lineterminator='\n')
+            writer.writerows(phase5_data)
 
         print("###################\n# phase5 finished #\n###################")
 
