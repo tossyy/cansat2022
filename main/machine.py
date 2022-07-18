@@ -258,7 +258,7 @@ class Machine: #機体
                 print("{:5.1f}| φ:{}, θ:{}, φ-θ:{}, latitude:{}, longitude:{}, distance:{}".format(time_stamp, phai, theta, dif_arg, latitude, longitude, distance))
                 phase5_data.append([time_stamp, latitude, longitude, theta, distance])
 
-                self.motor.change_speed(40)
+                self.motor.change_speed(20)
                 if dif_arg > 0:
                     self.motor.func_left()
                     time.sleep(dif_arg)
@@ -269,7 +269,7 @@ class Machine: #機体
                     time.sleep(abs(dif_arg))
                     self.motor.func_brake()
                     
-                self.motor.change_speed(90)
+                self.motor.change_speed(40)
             
             self.motor.func_forward()
             time.sleep(dist(latitude, longitude)/10 / 0.5) #暫定の0.5m/s。モーターのクラス変数にスピード追加して。！！！
