@@ -258,6 +258,10 @@ class Machine: #機体
                 print("{:5.1f}| φ:{}, θ:{}, φ-θ:{}, latitude:{}, longitude:{}, distance:{}".format(time_stamp, phai, theta, dif_arg, latitude, longitude, distance))
                 phase5_data.append([time_stamp, latitude, longitude, theta, distance])
 
+                with open('/home/pi/utat/log/phase5.csv', 'w') as f:
+                    writer = csv.writer(f, lineterminator='\n')
+                    writer.writerows(phase5_data)
+
                 self.motor.change_speed(30)
                 if dif_arg > 0:
                     self.motor.func_left()
@@ -275,10 +279,6 @@ class Machine: #機体
             time.sleep(dist(latitude, longitude)/10 / 0.5) #暫定の0.5m/s。モーターのクラス変数にスピード追加して。！！！
             self.motor.func_brake()
 
-
-        with open('/home/pi/utat/log/phase5.csv', 'w') as f:
-            writer = csv.writer(f, lineterminator='\n')
-            writer.writerows(phase5_data)
 
         print("###################\n# phase5 finished #\n###################")
 
