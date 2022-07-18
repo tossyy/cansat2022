@@ -11,7 +11,7 @@ from pressure import Pressure
 from gps import GPS
 from light import Light
 from jump import Jump
-from camera import Camera
+# from camera import Camera
 
 class Machine: #機体
 
