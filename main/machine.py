@@ -215,7 +215,7 @@ class Machine: #機体
 
         # センサーの取得値を保存する配列
         phase5_data = []
-        phase5_data.append(['time_stamp', 'latitude', 'longitude', 'theta'])
+        phase5_data.append(['time_stamp', 'latitude', 'longitude', 'theta', 'distance'])
         
         file_path = '/home/pi/utat/target_posision.txt'
         with open(file_path, mode='r') as f:
@@ -254,8 +254,9 @@ class Machine: #機体
                     dif_arg = -(2*math.pi + dif_arg)
                 
                 time_stamp = time.perf_counter()-self.start_time
-                print("{:5.1f}| φ:{}, θ:{}, φ-θ:{}, latitude:{}, longitude:{}, distance:{}".format(time_stamp, phai, theta, dif_arg, latitude, longitude, dist(latitude, longitude)))
-                phase5_data.append([time_stamp, latitude, longitude, theta])
+                distance = dist(latitude, longitude)
+                print("{:5.1f}| φ:{}, θ:{}, φ-θ:{}, latitude:{}, longitude:{}, distance:{}".format(time_stamp, phai, theta, dif_arg, latitude, longitude, distance))
+                phase5_data.append([time_stamp, latitude, longitude, theta, distance])
 
                 self.motor.change_speed(40)
                 if dif_arg > 0:
