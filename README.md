@@ -123,7 +123,7 @@ scp <送信したいファイルのパス> pi@raspberrypi.local:<送信したい
 	WorkingDirectory = /home/pi/utat/cansat2022/main
 	ExecStart = /usr/bin/python /home/pi/utat/cansat2022/main/main.py
 	StandardOutput = file:/home/pi/utat/log/log.txt
-	StandartError = file:/home/pi/utat/log/error.txt
+	StandardError = file:/home/pi/utat/log/error.txt
 	
 	[Install]
 	WantedBy = multi-user.target
