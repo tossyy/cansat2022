@@ -2,7 +2,7 @@ from machine import Machine
 
 ma = Machine()
 ma.motor.change_speed(30)
-ma.nine.calibrate(ma.motor)
+ma.calibrate(ma.motor)
 
 while True:
     c = input()
