@@ -62,7 +62,8 @@ class Motor:
 
 
     #前進する関数
-    def func_forward(self):
+    def func_forward(self, speed=90):
+        self.change_speed(speed)
         GPIO.output(self.AIN1, GPIO.LOW)
         GPIO.output(self.AIN2, GPIO.HIGH)
         GPIO.output(self.BIN1, GPIO.LOW)
@@ -70,7 +71,8 @@ class Motor:
 
 
     #後進する関数
-    def func_back(self):
+    def func_back(self, speed=90):
+        self.change_speed(speed)
         GPIO.output(self.AIN1, GPIO.HIGH)
         GPIO.output(self.AIN2, GPIO.LOW)
         GPIO.output(self.BIN1, GPIO.HIGH)
@@ -78,7 +80,8 @@ class Motor:
 
 
     #右回転する関数
-    def func_right(self):
+    def func_right(self, speed=40):
+        self.change_speed(speed)
         GPIO.output(self.AIN1, GPIO.LOW)
         GPIO.output(self.AIN2, GPIO.HIGH)
         GPIO.output(self.BIN1, GPIO.HIGH)
@@ -86,7 +89,8 @@ class Motor:
 
 
     #左回転する関数
-    def func_left(self):
+    def func_left(self, speed=40):
+        self.change_speed(speed)
         GPIO.output(self.AIN1, GPIO.HIGH)
         GPIO.output(self.AIN2, GPIO.LOW)
         GPIO.output(self.BIN1, GPIO.LOW)

@@ -261,8 +261,7 @@ class Machine: #機体
                 with open('/home/pi/utat/log/phase5.csv', 'w') as f:
                     writer = csv.writer(f, lineterminator='\n')
                     writer.writerows(phase5_data)
-
-                self.motor.change_speed(30)
+                    
                 if dif_arg > 0:
                     self.motor.func_left()
                     time.sleep(dif_arg)
@@ -273,7 +272,6 @@ class Machine: #機体
                     time.sleep(abs(dif_arg))
                     self.motor.func_brake()
                     
-                self.motor.change_speed(75)
             
             self.motor.func_forward()
             time.sleep(dist(latitude, longitude)/10 / 0.5) #暫定の0.5m/s。モーターのクラス変数にスピード追加して。！！！
@@ -295,11 +293,9 @@ class Machine: #機体
 
             if res['percent'] < 0.001: # 赤の領域が少ない場合は、旋回する
                 print("赤の領域微小のため右に1秒旋回")
-                self.motor.change_speed(30)
                 self.motor.func_right()
                 time.sleep(1)
                 self.motor.func_brake()
-                self.motor.change_speed(50)
                 continue
 
             if res['percent'] > 0.75: # 赤の領域が大きい場合は、終了する
@@ -313,21 +309,19 @@ class Machine: #機体
             print('percent={}, center={}, dif_arg={}'.format(res['percent'], res['center'], dif_arg))
             
             # ずれ角度に合わせて旋回する
-            self.motor.change_speed(30)
             if dif_arg > 0:
                 self.motor.func_left()
-                time.sleep(dif_arg/3)
+                time.sleep(dif_arg)
                 self.motor.func_brake()
                 
             else:
                 self.motor.func_right()
-                time.sleep(abs(dif_arg)/3)
+                time.sleep(abs(dif_arg))
                 self.motor.func_brake()
-            self.motor.change_speed(50)
 
             # 前進する
             self.motor.func_forward()
-            time.sleep(1)
+            time.sleep(2)
             self.motor.func_brake()
 
         print("###################\n# phase6 finished #\n###################")
@@ -344,8 +338,7 @@ class Machine: #機体
         start_time = time.perf_counter()
 
         #15秒間，値を取る
-        self.motor.change_speed(90)
-        self.motor.func_right()
+        self.motor.func_right(speed=90)
         while time.perf_counter() - start_time < 15:
             mag_value = self.nine.get_mag_value()
             x_list.append(mag_value[0])
