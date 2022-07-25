@@ -25,16 +25,12 @@ class Camera:
         hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV) # 色基準で2値化する
 
         # 色の範囲を指定する
-        lower_color1 = np.array([0,127,0])
+        lower_color1 = np.array([0,0,0])
         upper_color1= np.array([30,255,255])
-
-        lower_color2 = np.array([150,127,0])
-        upper_color2 = np.array([179,255,255])
 
         # 指定した色に基づいたマスク画像の生成
         mask1 = cv2.inRange(hsv, lower_color1, upper_color1)
-        mask2 = cv2.inRange(hsv, lower_color2, upper_color2)
-        mask = mask1 + mask2
+        mask = mask1
 
         # 非ゼロのピクセルが連続してできた領域を検出する
         nlabels, labels, stats, centroids = cv2.connectedComponentsWithStats(mask)
