@@ -434,8 +434,7 @@ if __name__ == "__main__":
     ma = Machine()
     try:
         time.sleep(5)
-        ma.calibrate()
-        ma.phase5()
+        ma.phase6()
     except Exception as e:
         print(e)
     finally:
