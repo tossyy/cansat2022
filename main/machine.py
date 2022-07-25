@@ -302,7 +302,7 @@ class Machine: #機体
                 self.motor.change_speed(50)
                 continue
 
-            if res['percent'] > 0.5: # 赤の領域が大きい場合は、終了する
+            if res['percent'] > 0.75: # 赤の領域が大きい場合は、終了する
                 print("赤の領域が50%以上となったため終了")
                 break
 
