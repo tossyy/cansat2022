@@ -294,12 +294,12 @@ class Machine: #機体
             res = self.camera.detect_center(file_path) # 赤の最大領域の占有率と重心を求める
 
             if res['percent'] < 0.005: # 赤の領域が少ない場合は、旋回する
-                print("赤の領域微小のため右に3秒旋回")
-                self.motor.change_speed(40)
+                print("赤の領域微小のため右に1秒旋回")
+                self.motor.change_speed(30)
                 self.motor.func_right()
-                time.sleep(3)
+                time.sleep(1)
                 self.motor.func_brake()
-                self.motor.change_speed(90)
+                self.motor.change_speed(50)
                 continue
 
             if res['percent'] > 0.5: # 赤の領域が大きい場合は、終了する
@@ -313,21 +313,21 @@ class Machine: #機体
             print('percent={}, center={}, dif_arg={}'.format(res['percent'], res['center'], dif_arg))
             
             # ずれ角度に合わせて旋回する
-            self.motor.change_speed(40)
+            self.motor.change_speed(30)
             if dif_arg > 0:
                 self.motor.func_left()
-                time.sleep(dif_arg)
+                time.sleep(dif_arg/3)
                 self.motor.func_brake()
                 
             else:
                 self.motor.func_right()
-                time.sleep(abs(dif_arg))
+                time.sleep(abs(dif_arg)/3)
                 self.motor.func_brake()
-            self.motor.change_speed(90)
+            self.motor.change_speed(50)
 
             # 前進する
             self.motor.func_forward()
-            time.sleep(0.1 / res['percent'])
+            time.sleep(1)
             self.motor.func_brake()
 
         print("###################\n# phase6 finished #\n###################")
