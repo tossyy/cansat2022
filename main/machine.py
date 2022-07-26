@@ -17,6 +17,10 @@ class Machine: #機体
     m_par_lat = 111092.7384
     m_par_lng = 81540.4864 #過去のものを流用
 
+    target_position_path = '/home/pi/utat/log/target_posision.txt'
+    mag_value_raw_path = '/home/pi/utat/log/mag_value_raw.csv'
+    mag_value_corrected_path = '/home/pi/utat/log/mag_value_corrected.csv'
+
     def __init__(self):
 
         # 開始時間を記録
@@ -217,8 +221,7 @@ class Machine: #機体
         phase5_data = []
         phase5_data.append(['time_stamp', 'latitude', 'longitude', 'theta', 'distance'])
         
-        file_path = '/home/pi/utat/target_posision.txt'
-        with open(file_path, mode='r') as f:
+        with open(self.target_position_path, mode='r') as f:
             lines = [s.strip() for s in f.readlines()]
             target_latitude = float(lines[0])
             target_longitude = float(lines[1])
@@ -284,7 +287,7 @@ class Machine: #機体
         print("###################\n# phase6 start    #\n###################")
         file_No = 0
         while True:
-            file_path = '/home/pi/utat/img/image{:>03d}.jpg'.format(file_No)
+            file_path = '/home/pi/utat/log/img/image{:>03d}.jpg'.format(file_No)
             file_No += 1
 
             print("taking pic...: {}".format(file_path))
@@ -358,15 +361,12 @@ class Machine: #機体
         x_list_corrected = [v - self.nine.correction_x for v in x_list]
         y_list_corrected = [v - self.nine.correction_y for v in y_list]
 
-        path_raw = '/home/pi/utat/mag_value_raw.csv'
-        path_corrected = '/home/pi/utat/mag_value_corrected.csv'
-
-        with open(path_raw, mode='w') as f:
+        with open(self.mag_value_raw_path, mode='w') as f:
             writer = csv.writer(f)
             for x,y in zip(x_list, y_list):
                 writer.writerow([x, y])
         
-        with open(path_corrected, mode='w') as f:
+        with open(self.mag_value_corrected_path, mode='w') as f:
             writer = csv.writer(f)
             for x,y in zip(x_list_corrected, y_list_corrected):
                 writer.writerow([x, y])
@@ -396,10 +396,8 @@ class Machine: #機体
         else:
             latitude = 0
             longitude = 0
-
-
-        file_path = '/home/pi/utat/target_posision.txt'
-        with open(file_path, mode='w') as f:
+            
+        with open(self.target_position_path, mode='w') as f:
             f.write(str(latitude) + '\n' + str(longitude))
         
         print('-----位置情報取得終了-----')
