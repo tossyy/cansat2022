@@ -260,12 +260,24 @@ class Machine: #機体
             latitude = current_position['latitude']
             longitude = current_position['longitude']
 
-            if dist(latitude, longitude) < 1:
+            distance = dist(latitude, longitude)
+
+            if distance < 1:
                 break
 
             dif_arg = 999
 
             while abs(dif_arg) > math.pi/6:
+
+                # スタック判定
+                dist_dif = abs(phase5_data[-3][4] - distance)
+                if len(phase5_data) > 4 and dist_dif < 0.1:
+                    print("dist_dif:{} -> 後退して旋回".format(dist_dif))
+                    self.motor.func_back(speed=100)
+                    time.sleep(2)
+                    self.motor.func_right(speed=100)
+                    time.sleep(2)
+
                 mag = self.nine.get_mag_value_corrected()
                 phai = math.atan(((target_latitude-latitude)*self.m_par_lat) / ((target_longitude-longitude)*self.m_par_lng))
                 theta = math.atan(mag[0]/mag[1])
@@ -284,7 +296,6 @@ class Machine: #機体
                     dif_arg = -(2*math.pi + dif_arg)
                 
                 time_stamp = time.perf_counter()-self.start_time
-                distance = dist(latitude, longitude)
                 print("{:5.1f}| φ:{}, θ:{}, φ-θ:{}, latitude:{}, longitude:{}, distance:{}".format(time_stamp, phai, theta, dif_arg, latitude, longitude, distance))
                 phase5_data.append([time_stamp, latitude, longitude, theta, distance])
 
@@ -317,7 +328,19 @@ class Machine: #機体
         self.i2c.write_byte(self.arduino.ARDUINO_ADRESS, self.arduino.PHASE_START)
         self.i2c.write_byte(self.arduino.ARDUINO_ADRESS, 6)
         file_No = 0
+        pre_res = None
         while True:
+
+            # スタック判定
+            percent_dif = abs(pre_res['percent'] - res['percent'])
+            center_dif = math.sqrt((pre_res['center'][0]-res['center'][0])**2+(pre_res['center'][1]-res['center'][1])**2)
+            if file_No > 1 and percent_dif < 0.001 and center_dif < 0.01:
+                print("percent_dif:{} | center_dif:{} -> 後退して旋回".format(percent_dif, center_dif))
+                self.motor.func_back(speed=100)
+                time.sleep(2)
+                self.motor.func_right(speed=100)
+                time.sleep(2)
+
             file_path = '/home/pi/utat/log/img/image{:>03d}.jpg'.format(file_No)
             file_No += 1
 
