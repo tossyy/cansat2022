@@ -14,6 +14,8 @@ int JumperVal = 0;
 byte data[5];
 
 void setup() {
+  Serial1.begin(9600);
+
   pinMode(CdsPin, INPUT);
   pinMode(JumperPin, INPUT);
   pinMode(Ni, OUTPUT);
@@ -45,6 +47,14 @@ void recieveEvent(int bitstream) {
         break;
       case 0x1:
         digitalWrite(Ni, NicromOff);
+        break;
+      case 0x2:
+        char phase = Wire.read();
+        Serial1.println("phase%dstart", phase);
+        break;
+      case 0x3:
+        char phase = Wire.read();
+        Serial1.println("phase%dend", phase);
         break;
     }
   }

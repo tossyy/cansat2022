@@ -1,5 +1,20 @@
-#include <string>
-using namespace std;
+const unit8_t END = 0xC0;
+const unit8_t ESC = 0xDB;
+const unit8_t ESC_END = 0xDC;
+const unit8_t ESC_ESC = 0xDD;
+
+union Data {
+  int phase;
+  int light;
+  int jump;
+  float press;
+  float lati;
+  float longi;
+  float alti;
+  float magX;
+  float magY;
+  unit8_t b[36];
+}
 
 void setup() {
   Serial1.begin(9600);
