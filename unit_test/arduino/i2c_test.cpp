@@ -52,13 +52,13 @@ void recieveEvent(int bitstream) {
       case 0x2:
         phase = Wire.read();
         Serial1.print("phase");
-        Serial1.print(phase+'0');
+        Serial1.print(phase);
         Serial1.println("start");
         break;
       case 0x3:
         phase = Wire.read();
         Serial1.print("phase");
-        Serial1.print(phase+'0');
+        Serial1.print(phase);
         Serial1.println("finish");
         break;
       case 0x4:
