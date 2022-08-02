@@ -12,6 +12,7 @@ const int Ni = 2;
 int CdsVal = 0;
 int JumperVal = 0;
 byte data[5];
+char phase;
 
 void setup() {
   Serial1.begin(9600);
@@ -49,12 +50,18 @@ void recieveEvent(int bitstream) {
         digitalWrite(Ni, NicromOff);
         break;
       case 0x2:
-        char phase = Wire.read();
-        Serial1.println("phase%dstart", phase);
+        phase = Wire.read();
+        Serial1.print("phase");
+        Serial1.print(phase);
+        Serial1.println("start");
         break;
       case 0x3:
-        char phase = Wire.read();
-        Serial1.println("phase%dend", phase);
+        phase = Wire.read();
+        Serial1.print("phase");
+        Serial1.print(phase);
+        Serial1.println("finish");
+        break;
+      case 0x4:
         break;
     }
   }

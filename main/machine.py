@@ -22,10 +22,10 @@ class Machine: #機体
     mag_value_raw_path = '/home/pi/utat/log/mag_value_raw.csv'
     mag_value_corrected_path = '/home/pi/utat/log/mag_value_corrected.csv'
 
-    def __init__(self):
+    def __double_to_hex(f):
+        return hex(struct.unpack('>Q', struct.pack('>d', f))[0])
 
-        self.i2c.write_byte(self.arduino.ARDUINO_ADRESS, self.arduino.PHASE_START)
-        self.i2c.write_byte(self.arduino.ARDUINO_ADRESS, 0)
+    def __init__(self):
 
         # 開始時間を記録
         self.start_time = time.perf_counter()
@@ -94,7 +94,9 @@ class Machine: #機体
             time_stamp = time.perf_counter()-self.start_time
             print("{:5.1f}| 光センサ:{:>3d}, ジャンパピン:{}, 継続:{}".format(time_stamp, light_val, jump_is_off, is_continue))
             phase1_data.append([time_stamp, light_val, int(jump_is_off), int(is_continue)])
-            
+            self.i2c.write_byte(self.arduino.ARDUINO_ADRESS, self.arduino.PHASE_1)
+
+
             if is_continue:
 
                 # 光が途切れていた場合、やり直し
