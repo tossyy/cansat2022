@@ -5,6 +5,7 @@ class Arduino:
     NICROM_OFF = 0x1
     PHASE_START = 0x2
     PHASE_END = 0x3
+    PHASE_1 = 0x4
 
     def __init__(self, i2c):
         self.i2c = i2c
