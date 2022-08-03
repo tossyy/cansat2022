@@ -2,7 +2,7 @@
 
 ## step1 : サーバーを立ち上げよう
  
-ラズパイに接続して，`cd french_cruller`で専用ディレクトリに移動した後，
+ラズパイに接続して，`cd utat/cansat2022/french_cruller`で専用ディレクトリに移動した後，
 ```bash
 python french_cruller.py 8000
 ```
