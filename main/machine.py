@@ -272,13 +272,14 @@ class Machine: #機体
             while abs(dif_arg) > math.pi/6:
 
                 # スタック判定
-                dist_dif = abs(phase5_data[-3][4] - distance)
-                if len(phase5_data) > 4 and dist_dif < 0.1:
-                    print("dist_dif:{} -> 後退して旋回".format(dist_dif))
-                    self.motor.func_back(speed=100)
-                    time.sleep(2)
-                    self.motor.func_right(speed=100)
-                    time.sleep(2)
+                if len(phase5_data) > 4:
+                    dist_dif = abs(phase5_data[-3][4] - distance)
+                    if dist_dif < 0.1:
+                        print("dist_dif:{} -> 後退して旋回".format(dist_dif))
+                        self.motor.func_back(speed=100)
+                        time.sleep(2)
+                        self.motor.func_right(speed=100)
+                        time.sleep(2)
 
                 mag = self.nine.get_mag_value_corrected()
                 phai = math.atan(((target_latitude-latitude)*self.m_par_lat) / ((target_longitude-longitude)*self.m_par_lng))
