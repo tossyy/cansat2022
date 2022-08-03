@@ -342,7 +342,7 @@ class Machine: #機体
             res = self.camera.detect_center(file_path) # 赤の最大領域の占有率と重心を求める
 
              # スタック判定
-            if file_No > 1 and pre_res["percent"] != 0 :
+            if file_No > 1 and pre_res["percent"] != 0 and res["percent"] != 0 :
                 percent_dif = abs(pre_res['percent'] - res['percent'])
                 center_dif = math.sqrt((pre_res['center'][0]-res['center'][0])**2+(pre_res['center'][1]-res['center'][1])**2)
                 if percent_dif < 0.001 and center_dif < 0.01:
