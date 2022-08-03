@@ -354,7 +354,7 @@ class Machine: #機体
 
             pre_res = res.copy()
 
-            print(res, pre_res)
+            print("{}\n{}".format(res,pre_res))
 
             if res['percent'] < 0.001: # 赤の領域が少ない場合は、旋回する
                 print("赤の領域微小のため右に1秒旋回")
