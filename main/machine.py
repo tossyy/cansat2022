@@ -280,6 +280,8 @@ class Machine: #機体
                         time.sleep(2)
                         self.motor.func_right(speed=100)
                         time.sleep(2)
+                        self.motor.func_forward(speed = 100)
+                        time.sleep(2)
 
                 mag = self.nine.get_mag_value_corrected()
                 phai = math.atan(((target_latitude-latitude)*self.m_par_lat) / ((target_longitude-longitude)*self.m_par_lng))
