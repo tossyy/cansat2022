@@ -334,22 +334,25 @@ class Machine: #機体
         pre_res = None
         while True:
 
-            # スタック判定
-            percent_dif = abs(pre_res['percent'] - res['percent'])
-            center_dif = math.sqrt((pre_res['center'][0]-res['center'][0])**2+(pre_res['center'][1]-res['center'][1])**2)
-            if file_No > 1 and percent_dif < 0.001 and center_dif < 0.01:
-                print("percent_dif:{} | center_dif:{} -> 後退して旋回".format(percent_dif, center_dif))
-                self.motor.func_back(speed=100)
-                time.sleep(2)
-                self.motor.func_right(speed=100)
-                time.sleep(2)
-
             file_path = '/home/pi/utat/log/img/image{:>03d}.jpg'.format(file_No)
             file_No += 1
 
             print("taking pic...: {}".format(file_path))
             self.camera.take_pic(file_path) # 写真を撮る
             res = self.camera.detect_center(file_path) # 赤の最大領域の占有率と重心を求める
+            
+             # スタック判定
+            if file_No > 1:
+                percent_dif = abs(pre_res['percent'] - res['percent'])
+                center_dif = math.sqrt((pre_res['center'][0]-res['center'][0])**2+(pre_res['center'][1]-res['center'][1])**2)
+                if percent_dif < 0.001 and center_dif < 0.01:
+                    print("percent_dif:{} | center_dif:{} -> 後退して旋回".format(percent_dif, center_dif))
+                    self.motor.func_back(speed=100)
+                    time.sleep(2)
+                    self.motor.func_right(speed=100)
+                    time.sleep(2)
+
+            pre_res = res.copy()
 
             if res['percent'] < 0.001: # 赤の領域が少ない場合は、旋回する
                 print("赤の領域微小のため右に1秒旋回")
