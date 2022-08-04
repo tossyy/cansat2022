@@ -31,5 +31,11 @@
 キャリブレーションに関しては[ 9 軸センサのドキュメント](https://github.com/tossyy/cansat2022/blob/master/documents/9ax_doc.md)を参照してください。
 
 ## phase 5 
-GPS走行を行います。
+GPS走行を行います。  
+
+## phase 6
+画像処理による走行。
+
+##　スタック判定
+スタック判定をphase 5,6 で追加。
 
