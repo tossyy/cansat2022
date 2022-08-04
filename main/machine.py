@@ -257,6 +257,10 @@ class Machine: #機体
         
         dist = lambda latitude, longitude: math.sqrt(((latitude-target_latitude)*self.m_par_lat)**2 + ((longitude-target_longitude)*self.m_par_lng)**2)
 
+        #スタック判定用カウンター
+        forward_counter = 0
+        rotation_counter = 0
+
         while True:
             current_position = self.gps.get_position()
             latitude = current_position['latitude']
