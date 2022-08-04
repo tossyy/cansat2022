@@ -1,3 +1,4 @@
+from turtle import forward, left
 import smbus #気圧センサの管理に使います
 import time
 import struct
@@ -259,7 +260,9 @@ class Machine: #機体
 
         #スタック判定用カウンター
         forward_counter = 0
-        rotation_counter = 0
+        right_counter = 0
+        left_counter = 0
+        
 
         while True:
             current_position = self.gps.get_position()
@@ -276,7 +279,7 @@ class Machine: #機体
             while abs(dif_arg) > math.pi/6:
 
                 # スタック判定
-                if len(phase5_data) > 4:
+                if len(phase5_data) > 4 or right_counter > 4 or left_counter > 4 or forward_counter > 4:
                     dist_dif = abs(phase5_data[-3][4] - distance)
                     if dist_dif < 0.1:
                         print("dist_dif:{} -> 後退して旋回".format(dist_dif))
@@ -286,6 +289,9 @@ class Machine: #機体
                         time.sleep(2)
                         self.motor.func_forward(speed = 100)
                         time.sleep(2)
+                        forward_counter = 0
+                        right_counter = 0
+                        left_counter = 0
 
                 mag = self.nine.get_mag_value_corrected()
                 phai = math.atan(((target_latitude-latitude)*self.m_par_lat) / ((target_longitude-longitude)*self.m_par_lng))
@@ -316,16 +322,18 @@ class Machine: #機体
                     self.motor.func_left()
                     time.sleep(dif_arg)
                     self.motor.func_brake()
+                    left_counter += 1
                     
                 else:
                     self.motor.func_right()
                     time.sleep(abs(dif_arg))
                     self.motor.func_brake()
-                    
+                    right_counter += 1
             
             self.motor.func_forward()
             time.sleep(dist(latitude, longitude)/10 / 0.5) #暫定の0.5m/s。モーターのクラス変数にスピード追加して。！！！
             self.motor.func_brake()
+            forward_counter += 1
 
 
         print("###################\n# phase5 finished #\n###################")
