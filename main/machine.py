@@ -9,7 +9,7 @@ from motor import Motor
 from arduino import Arduino
 from nine import Nine
 from pressure import Pressure
-from gps import GPScode
+from gps import GPS
 from light import Light
 from jump import Jump
 ##from camera import Camera
