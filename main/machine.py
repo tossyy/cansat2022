@@ -9,7 +9,7 @@ from motor import Motor
 from arduino import Arduino
 from nine import Nine
 from pressure import Pressure
-from gps import GPS
+from gps import GPScode
 from light import Light
 from jump import Jump
 ##from camera import Camera
@@ -76,7 +76,7 @@ class Machine: #機体
         '''
 
         # 光を検知しているかどうかの閾値
-        light_threshold = 1000
+        light_threshold = 300
 
         # 光を検知し続けているかのフラグ
         is_continue = False
