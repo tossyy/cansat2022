@@ -18,7 +18,7 @@ ip a
  
 ラズパイに接続して，
 ```bash
-cd utat/cansat2022/frenchcruller
+cd utat/frenchcruller
 ```
 で専用ディレクトリに移動した後，
 ```bash
