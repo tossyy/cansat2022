@@ -1,4 +1,4 @@
-from turtle import forward, left
+
 import smbus #気圧センサの管理に使います
 import time
 import struct
