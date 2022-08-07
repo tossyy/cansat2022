@@ -66,7 +66,6 @@ class Machine: #機体
     def phase1(self): # Phase 1。放出判定。
         print("###################\n# phase1 start    #\n###################")
         self.i2c.write_byte(self.arduino.ARDUINO_ADRESS, self.arduino.PHASE_START)
-        self.i2c.write_byte(self.arduino.ARDUINO_ADRESS, 1)
 
         '''
         【放出判定】
@@ -131,12 +130,10 @@ class Machine: #機体
 
         print("###################\n# phase1 finished #\n###################")
         self.i2c.write_byte(self.arduino.ARDUINO_ADRESS, self.arduino.PHASE_END)
-        self.i2c.write_byte(self.arduino.ARDUINO_ADRESS, 1)
 
     def phase2(self): # 着地判定
         print("###################\n# phase2 start    #\n###################")
         self.i2c.write_byte(self.arduino.ARDUINO_ADRESS, self.arduino.PHASE_START)
-        self.i2c.write_byte(self.arduino.ARDUINO_ADRESS, 2)
 
         '''
         【着地判定】
@@ -205,12 +202,10 @@ class Machine: #機体
 
         print("###################\n# phase2 finished #\n###################")
         self.i2c.write_byte(self.arduino.ARDUINO_ADRESS, self.arduino.PHASE_END)
-        self.i2c.write_byte(self.arduino.ARDUINO_ADRESS, 2)
 
     def phase3(self): # ニクロム線断線
         print("###################\n# phase3 start    #\n###################")
         self.i2c.write_byte(self.arduino.ARDUINO_ADRESS, self.arduino.PHASE_START)
-        self.i2c.write_byte(self.arduino.ARDUINO_ADRESS, 3)
 
         print("断線開始")
         self.i2c.write_byte(self.arduino.ARDUINO_ADRESS, self.arduino.NICROM_ON)
@@ -222,13 +217,11 @@ class Machine: #機体
 
         print("###################\n# phase3 finished #\n###################")
         self.i2c.write_byte(self.arduino.ARDUINO_ADRESS, self.arduino.PHASE_END)
-        self.i2c.write_byte(self.arduino.ARDUINO_ADRESS, 3)
 
 
     def phase4(self): # キャリブレーション
         print("###################\n# phase4 start    #\n###################")
         self.i2c.write_byte(self.arduino.ARDUINO_ADRESS, self.arduino.PHASE_START)
-        self.i2c.write_byte(self.arduino.ARDUINO_ADRESS, 4)
 
         print("5秒前進")
         self.motor.func_forward()
@@ -240,12 +233,10 @@ class Machine: #機体
 
         print("###################\n# phase4 finished #\n###################")
         self.i2c.write_byte(self.arduino.ARDUINO_ADRESS, self.arduino.PHASE_END)
-        self.i2c.write_byte(self.arduino.ARDUINO_ADRESS, 4)
 
     def phase5(self):
         print("###################\n# phase5 start    #\n###################")
         self.i2c.write_byte(self.arduino.ARDUINO_ADRESS, self.arduino.PHASE_START)
-        self.i2c.write_byte(self.arduino.ARDUINO_ADRESS, 5)
 
         # センサーの取得値を保存する配列
         phase5_data = []
@@ -344,12 +335,10 @@ class Machine: #機体
 
         print("###################\n# phase5 finished #\n###################")
         self.i2c.write_byte(self.arduino.ARDUINO_ADRESS, self.arduino.PHASE_END)
-        self.i2c.write_byte(self.arduino.ARDUINO_ADRESS, 5)
 
     def phase6(self): # キャメラ
         print("###################\n# phase6 start    #\n###################")
         self.i2c.write_byte(self.arduino.ARDUINO_ADRESS, self.arduino.PHASE_START)
-        self.i2c.write_byte(self.arduino.ARDUINO_ADRESS, 6)
         file_No = 0
         pre_res = None
         while True:
@@ -411,7 +400,6 @@ class Machine: #機体
 
         print("###################\n# phase6 finished #\n###################")
         self.i2c.write_byte(self.arduino.ARDUINO_ADRESS, self.arduino.PHASE_END)
-        self.i2c.write_byte(self.arduino.ARDUINO_ADRESS, 6)
 
     def calibrate(self):
         print("caliblation start")
