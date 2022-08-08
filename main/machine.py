@@ -502,11 +502,26 @@ class Machine: #機体
 
 if __name__ == "__main__":
     ma = Machine()
+    # try:
+    #     time.sleep(5)
+    #     #ma.phase4()
+    #     #ma.phase5()
+    #     ma.phase6()
+    # except Exception as e:
+    #     print(e)
+    # finally:
+    #     ma.close()
+
     try:
-        time.sleep(5)
-        #ma.phase4()
-        #ma.phase5()
-        ma.phase6()
+        ma.motor.func_forward()
+        time.sleep(3)
+        ma.motor.func_right()
+        time.sleep(3)
+        ma.motor.func_left()
+        time.sleep(3)
+        ma.motor.func_back()
+        time.sleep(3)
+        ma.motor.func_brake()
     except Exception as e:
         print(e)
     finally:

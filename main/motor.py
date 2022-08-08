@@ -103,4 +103,3 @@ class Motor:
 
         #GPIOを開放
         GPIO.cleanup()
-    
