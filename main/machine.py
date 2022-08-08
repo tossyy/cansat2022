@@ -253,6 +253,7 @@ class Machine: #機体
         forward_counter = 0
         right_counter = 0
         left_counter = 0
+        forward_sequence = True
         
 
         while True:
@@ -317,6 +318,7 @@ class Machine: #機体
                     forward_counter = 0
                     right_counter = 0
                     print("left")
+                    forward_sequence = False
                     
                 else:
                     self.motor.func_right()
@@ -326,13 +328,15 @@ class Machine: #機体
                     forward_counter = 0
                     left_counter = 0
                     print("right")
+                    forward_sequence = False
             
             self.motor.func_forward()
             time.sleep(dist(latitude, longitude)/10 / 0.5) #暫定の0.5m/s。モーターのクラス変数にスピード追加して。！！！
             self.motor.func_brake()
-            forward_counter += 1
-            right_counter = 0
-            left_counter = 0
+            if forward_sequence:
+                forward_counter += 1
+                left_counter = 0
+                right_counter = 0
             print("forward")
 
 
