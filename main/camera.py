@@ -24,14 +24,14 @@ class Camera:
 
         hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV) # 色基準で2値化する
 
-        # 色の範囲を指定する
-        hsv_min = np.array([0,145,0])
-        hsv_max = np.array([5,255,255])
+        # 色の範囲を指定する #を調整0~255
+        hsv_min = np.array([0,127,100]) #
+        hsv_max = np.array([30,255,255]) #
         mask1 = cv2.inRange(hsv, hsv_min, hsv_max)
 
         # 赤色のHSVの値域2
-        hsv_min = np.array([150,100,0])
-        hsv_max = np.array([179,255,255])
+        hsv_min = np.array([150,127,150]) #
+        hsv_max = np.array([179,255,255]) #
         mask2 = cv2.inRange(hsv, hsv_min, hsv_max)
 
         mask = mask1 + mask2
