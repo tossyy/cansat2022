@@ -270,7 +270,7 @@ class Machine: #機体
             while abs(dif_arg) > math.pi/6:
 
                 # スタック判定
-                if len(phase5_data) > 4 or (right_counter > 3 or left_counter > 3 or forward_counter > 3):
+                if len(phase5_data) > 4 and (right_counter > 3 or left_counter > 3 or forward_counter > 3):
                     dist_dif = abs(phase5_data[-3][4] - distance)
                     if dist_dif < 0.1:
                         print("dist_dif:{} -> 後退して旋回".format(dist_dif))
@@ -316,6 +316,7 @@ class Machine: #機体
                     left_counter += 1
                     forward_counter = 0
                     right_counter = 0
+                    print("left")
                     
                 else:
                     self.motor.func_right()
@@ -324,6 +325,7 @@ class Machine: #機体
                     right_counter += 1
                     forward_counter = 0
                     left_counter = 0
+                    print("right")
             
             self.motor.func_forward()
             time.sleep(dist(latitude, longitude)/10 / 0.5) #暫定の0.5m/s。モーターのクラス変数にスピード追加して。！！！
@@ -331,6 +333,7 @@ class Machine: #機体
             forward_counter += 1
             right_counter = 0
             left_counter = 0
+            print("forward")
 
 
         print("###################\n# phase5 finished #\n###################")
