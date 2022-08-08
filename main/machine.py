@@ -270,7 +270,7 @@ class Machine: #機体
             while abs(dif_arg) > math.pi/6:
 
                 # スタック判定
-                if len(phase5_data) > 4 and (right_counter > 4 or left_counter > 4 or forward_counter > 4):
+                if len(phase5_data) > 4 or (right_counter > 4 or left_counter > 4 or forward_counter > 4):
                     dist_dif = abs(phase5_data[-3][4] - distance)
                     if dist_dif < 0.1:
                         print("dist_dif:{} -> 後退して旋回".format(dist_dif))
