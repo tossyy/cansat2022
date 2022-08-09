@@ -15,8 +15,8 @@ class Motor:
         self.AIN2 = 9
         self.PWMA = 11
 
-        self.BIN1 = 22
-        self.BIN2 = 27
+        self.BIN1 = 27
+        self.BIN2 = 22
         self.PWMB = 17
 
         #各ピンを出力ピンに設定
@@ -29,7 +29,7 @@ class Motor:
         GPIO.setup(self.PWMB, GPIO.OUT, initial = GPIO.LOW)
 
         #PWMオブジェクトのインスタンスを作成
-        #出力ピン：12,26  周波数：100Hz
+        #出力ピン：11,17  周波数：100Hz
         self.p_a = GPIO.PWM(self.PWMA,100)
         self.p_b = GPIO.PWM(self.PWMB,100)
 
