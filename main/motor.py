@@ -11,12 +11,12 @@ class Motor:
         GPIO.setmode(GPIO.BCM)
 
         #使用するピン番号
-        self.AIN1 = 10
-        self.AIN2 = 9
+        self.AIN1 = 9
+        self.AIN2 = 10
         self.PWMA = 11
 
-        self.BIN1 = 27
-        self.BIN2 = 22
+        self.BIN1 = 22
+        self.BIN2 = 27
         self.PWMB = 17
 
         #各ピンを出力ピンに設定
