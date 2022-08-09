@@ -77,7 +77,7 @@ class Machine: #機体
         '''
 
         # 光を検知しているかどうかの閾値
-        light_threshold = 200
+        light_threshold = 400
 
         # 光の閾値を上回り続けているかのフラグ
         is_continue = False
