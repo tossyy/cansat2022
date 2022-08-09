@@ -576,8 +576,8 @@ if __name__ == "__main__":
     try:
         time.sleep(5)
         ma.phase5()
-        ma.phase6()
-        ma.phase7()
+        #ma.phase6()
+        #ma.phase7()
 
     except Exception as e:
         print(e)
