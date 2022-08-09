@@ -381,7 +381,7 @@ class Machine: #機体
                     writer.writerows(phase6_data)
                     
                 if dif_arg > 0:
-                    self.motor.func_left()
+                    self.motor.func_left(speed = 25)
                     time.sleep(dif_arg)
                     self.motor.func_brake()
                     left_counter += 1
@@ -391,7 +391,7 @@ class Machine: #機体
                     forward_sequence = False
                     
                 else:
-                    self.motor.func_right()
+                    self.motor.func_right(speed = 25)
                     time.sleep(abs(dif_arg))
                     self.motor.func_brake()
                     right_counter += 1
@@ -575,9 +575,9 @@ if __name__ == "__main__":
     ma = Machine()
     try:
         time.sleep(5)
-        #ma.phase5()
+        ma.phase5()
         ma.phase6()
-        #ma.phase7()
+        ma.phase7()
 
     except Exception as e:
         print(e)
