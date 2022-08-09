@@ -12,7 +12,7 @@ from pressure import Pressure
 from gps import GPS
 from light import Light
 from jump import Jump
-#from camera import Camera
+from camera import Camera
 
 class Machine: #機体
 
@@ -56,7 +56,7 @@ class Machine: #機体
         self.jump = Jump(self.arduino)
 
         # キャメラ初期化
-        #self.camera = Camera()
+        self.camera = Camera()
 
         self.phase0_time = time.perf_counter()
 
