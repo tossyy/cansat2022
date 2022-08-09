@@ -58,13 +58,83 @@ class Machine: #機体
         # キャメラ初期化
         #self.camera = Camera()
 
+        self.phase0_time = time.perf_counter()
+
         print("マシーン初期化完了")
         self.i2c.write_byte(self.arduino.ARDUINO_ADRESS, self.arduino.PHASE_END)
         self.i2c.write_byte(self.arduino.ARDUINO_ADRESS, 0)
+
+    def phase1(self): # Phase1。暗闇判定。
+        print("###################\n# phase1 start    #\n###################")
+        self.i2c.write_byte(self.arduino.ARDUINO_ADRESS, self.arduino.PHASE_START)
+
+        '''
+        【暗闇判定】
+        条件（以下のうちいずれかを満たせばOK）
+        ①30秒間光センサが閾値を上回る
+        ②120秒間経過する
+        (暗いほど値が大きい)
+        '''
+
+        # 光を検知しているかどうかの閾値
+        light_threshold = 200
+
+        # 光の閾値を上回り続けているかのフラグ
+        is_continue = False
+
+        # スイッチが入った瞬間
+        start_time = 0
+
+        # センサーの取得値を保存する配列
+        phase1_data = []
+        phase1_data.append(['time_stamp', 'light_val', 'is_continue'])
+
+        while True:
+            # 値を取得し出力
+            light_val = self.light.get_val()
+            time_stamp = time.perf_counter()-self.start_time
+            print("{:5.1f}| 光センサ:{:>3d}, 継続:{}".format(time_stamp, light_val, is_continue))
+            phase1_data.append([time_stamp, light_val, int(is_continue)])
+            self.i2c.write_byte(self.arduino.ARDUINO_ADRESS, self.arduino.PHASE_1)
+
+            if is_continue:
+
+                # 光が途切れていた場合、やり直し
+                if light_val <= light_threshold:
+                    is_continue = False
+                    continue
+
+                # 光の継続時間を測る
+                tim = time.perf_counter() - start_time
+
+                if tim > 30:
+                    print("暗闇判定：ケース①")
+                    break
+
+            # 暗い場合（閾値を上回る）
+            elif light_val > light_threshold:
+
+                is_continue = True
+                start_time = time.perf_counter()
+
+            tim_case = time.perf_counter() - self.phase0_time
+            if tim_case > 120:
+                print("暗闇判定：ケース②")
+                break
+
+            time.sleep(0.3)
+
+        with open('/home/pi/utat/log/phase1.csv', 'w') as f:
+            writer = csv.writer(f, lineterminator='\n')
+            writer.writerows(phase1_data)
+
+        print("###################\n# phase1 finished #\n###################")
+        self.i2c.write_byte(self.arduino.ARDUINO_ADRESS, self.arduino.PHASE_END)
+
         
 
-    def phase1(self): # Phase 1。放出判定。
-        print("###################\n# phase1 start    #\n###################")
+    def phase2(self): # Phase2。放出判定。
+        print("###################\n# phase2 start    #\n###################")
         self.i2c.write_byte(self.arduino.ARDUINO_ADRESS, self.arduino.PHASE_START)
 
         '''
@@ -84,8 +154,8 @@ class Machine: #機体
         start_time = 0
 
         # センサーの取得値を保存する配列
-        phase1_data = []
-        phase1_data.append(['time_stamp', 'light_val', 'jump_val', 'jump_is_off', 'is_continue'])
+        phase2_data = []
+        phase2_data.append(['time_stamp', 'light_val', 'jump_val', 'jump_is_off', 'is_continue'])
 
         while True:
             # 値を取得し出力
@@ -93,7 +163,7 @@ class Machine: #機体
             jump_is_off = self.jump.is_off()
             time_stamp = time.perf_counter()-self.start_time
             print("{:5.1f}| 光センサ:{:>3d}, ジャンパピン:{}, 継続:{}".format(time_stamp, light_val, jump_is_off, is_continue))
-            phase1_data.append([time_stamp, light_val, int(jump_is_off), int(is_continue)])
+            phase2_data.append([time_stamp, light_val, int(jump_is_off), int(is_continue)])
             self.i2c.write_byte(self.arduino.ARDUINO_ADRESS, self.arduino.PHASE_1)
 
 
@@ -122,17 +192,17 @@ class Machine: #機体
             
             time.sleep(0.3)
 
-        self.phase1_time = time.perf_counter()
+        self.phase2_time = time.perf_counter()
 
-        with open('/home/pi/utat/log/phase1.csv', 'w') as f:
+        with open('/home/pi/utat/log/phase2.csv', 'w') as f:
             writer = csv.writer(f, lineterminator='\n')
-            writer.writerows(phase1_data)
+            writer.writerows(phase2_data)
 
-        print("###################\n# phase1 finished #\n###################")
+        print("###################\n# phase2 finished #\n###################")
         self.i2c.write_byte(self.arduino.ARDUINO_ADRESS, self.arduino.PHASE_END)
 
-    def phase2(self): # 着地判定
-        print("###################\n# phase2 start    #\n###################")
+    def phase3(self): # 着地判定
+        print("###################\n# phase3 start    #\n###################")
         self.i2c.write_byte(self.arduino.ARDUINO_ADRESS, self.arduino.PHASE_START)
 
         '''
@@ -152,8 +222,8 @@ class Machine: #機体
         altitude_list = []
 
         # センサーの取得値を保存する配列
-        phase2_data = []
-        phase2_data.append(['time_stamp', 'pressure_val', 'altitude_val', 'is_continue'])
+        phase3_data = []
+        phase3_data.append(['time_stamp', 'pressure_val', 'altitude_val', 'is_continue'])
 
         while True:
             # 値を取得し出力
@@ -161,7 +231,7 @@ class Machine: #機体
             altitude_val = self.gps.get_position()['altitude']
             time_stamp = time.perf_counter()-self.start_time
             print("{:5.1f}| 気圧:{:7.3f}, 高度:{:6.3f}, 継続:{}".format(time_stamp, pressure_val, altitude_val, is_continue))
-            phase2_data.append([time_stamp, pressure_val, altitude_val, int(is_continue)])
+            phase3_data.append([time_stamp, pressure_val, altitude_val, int(is_continue)])
 
 
             pressure_list.append(pressure_val)
@@ -189,22 +259,22 @@ class Machine: #機体
                 start_time = time.perf_counter()
 
             
-            tim_case2 = time.perf_counter() - self.phase1_time
+            tim_case2 = time.perf_counter() - self.phase2_time
             if tim_case2 > 30:
                 print("着地判定：ケース②")
                 break
 
             time.sleep(0.3)
 
-        with open('/home/pi/utat/log/phase2.csv', 'w') as f:
+        with open('/home/pi/utat/log/phase3.csv', 'w') as f:
             writer = csv.writer(f, lineterminator='\n')
-            writer.writerows(phase2_data)
+            writer.writerows(phase3_data)
 
-        print("###################\n# phase2 finished #\n###################")
+        print("###################\n# phase3 finished #\n###################")
         self.i2c.write_byte(self.arduino.ARDUINO_ADRESS, self.arduino.PHASE_END)
 
-    def phase3(self): # ニクロム線断線
-        print("###################\n# phase3 start    #\n###################")
+    def phase4(self): # ニクロム線断線
+        print("###################\n# phase4 start    #\n###################")
         self.i2c.write_byte(self.arduino.ARDUINO_ADRESS, self.arduino.PHASE_START)
 
         print("断線開始")
@@ -215,12 +285,12 @@ class Machine: #機体
         print("10秒待機")
         time.sleep(10)
 
-        print("###################\n# phase3 finished #\n###################")
+        print("###################\n# phase4 finished #\n###################")
         self.i2c.write_byte(self.arduino.ARDUINO_ADRESS, self.arduino.PHASE_END)
 
 
-    def phase4(self): # キャリブレーション
-        print("###################\n# phase4 start    #\n###################")
+    def phase5(self): # キャリブレーション
+        print("###################\n# phase5 start    #\n###################")
         self.i2c.write_byte(self.arduino.ARDUINO_ADRESS, self.arduino.PHASE_START)
 
         print("5秒前進")
@@ -231,16 +301,16 @@ class Machine: #機体
         time.sleep(1)
         self.calibrate()
 
-        print("###################\n# phase4 finished #\n###################")
+        print("###################\n# phase5 finished #\n###################")
         self.i2c.write_byte(self.arduino.ARDUINO_ADRESS, self.arduino.PHASE_END)
 
-    def phase5(self):
-        print("###################\n# phase5 start    #\n###################")
+    def phase6(self):
+        print("###################\n# phase6 start    #\n###################")
         self.i2c.write_byte(self.arduino.ARDUINO_ADRESS, self.arduino.PHASE_START)
 
         # センサーの取得値を保存する配列
-        phase5_data = []
-        phase5_data.append(['time_stamp', 'latitude', 'longitude', 'theta', 'distance'])
+        phase6_data = []
+        phase6_data.append(['time_stamp', 'latitude', 'longitude', 'theta', 'distance'])
         
         with open(self.target_position_path, mode='r') as f:
             lines = [s.strip() for s in f.readlines()]
@@ -271,8 +341,8 @@ class Machine: #機体
             while abs(dif_arg) > math.pi/6:
 
                 # スタック判定
-                if len(phase5_data) > 4 and (right_counter > 3 or left_counter > 3 or forward_counter > 3):
-                    dist_dif = abs(phase5_data[-3][4] - distance)
+                if len(phase6_data) > 4 and (right_counter > 3 or left_counter > 3 or forward_counter > 3):
+                    dist_dif = abs(phase6_data[-3][4] - distance)
                     if dist_dif < 0.1:
                         print("dist_dif:{} -> 後退して旋回".format(dist_dif))
                         self.motor.func_back(speed=100)
@@ -304,11 +374,11 @@ class Machine: #機体
                 
                 time_stamp = time.perf_counter()-self.start_time
                 print("{:5.1f}| φ:{}, θ:{}, φ-θ:{}, latitude:{}, longitude:{}, distance:{}".format(time_stamp, phai, theta, dif_arg, latitude, longitude, distance))
-                phase5_data.append([time_stamp, latitude, longitude, theta, distance])
+                phase6_data.append([time_stamp, latitude, longitude, theta, distance])
 
-                with open('/home/pi/utat/log/phase5.csv', 'w') as f:
+                with open('/home/pi/utat/log/phase6.csv', 'w') as f:
                     writer = csv.writer(f, lineterminator='\n')
-                    writer.writerows(phase5_data)
+                    writer.writerows(phase6_data)
                     
                 if dif_arg > 0:
                     self.motor.func_left()
@@ -340,11 +410,11 @@ class Machine: #機体
             print("forward")
 
 
-        print("###################\n# phase5 finished #\n###################")
+        print("###################\n# phase6 finished #\n###################")
         self.i2c.write_byte(self.arduino.ARDUINO_ADRESS, self.arduino.PHASE_END)
 
-    def phase6(self): # キャメラ
-        print("###################\n# phase6 start    #\n###################")
+    def phase7(self): # キャメラ
+        print("###################\n# phase7 start    #\n###################")
         self.i2c.write_byte(self.arduino.ARDUINO_ADRESS, self.arduino.PHASE_START)
         file_No = 0
         pre_res = None
@@ -405,7 +475,7 @@ class Machine: #機体
             time.sleep(2)
             self.motor.func_brake()
 
-        print("###################\n# phase6 finished #\n###################")
+        print("###################\n# phase7 finished #\n###################")
         self.i2c.write_byte(self.arduino.ARDUINO_ADRESS, self.arduino.PHASE_END)
 
     def calibrate(self):
@@ -493,6 +563,7 @@ class Machine: #機体
             self.phase4()
             self.phase5()
             self.phase6()
+            self.phase7()
 
         except Exception as e:
             print(e)
@@ -502,26 +573,12 @@ class Machine: #機体
 
 if __name__ == "__main__":
     ma = Machine()
-    # try:
-    #     time.sleep(5)
-    #     #ma.phase4()
-    #     #ma.phase5()
-    #     ma.phase6()
-    # except Exception as e:
-    #     print(e)
-    # finally:
-    #     ma.close()
-
     try:
-        ma.motor.func_forward()
-        time.sleep(3)
-        ma.motor.func_right()
-        time.sleep(3)
-        ma.motor.func_left()
-        time.sleep(3)
-        ma.motor.func_back()
-        time.sleep(3)
-        ma.motor.func_brake()
+        time.sleep(5)
+        ma.phase5()
+        ma.phase6()
+        ma.phase7()
+
     except Exception as e:
         print(e)
     finally:
