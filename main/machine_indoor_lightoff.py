@@ -76,7 +76,13 @@ class Machine_indoor_lightoff: #機体
         ・5分間待機する
         '''
 
-        time.sleep(300)
+        start_time = time.pref_counter()
+        time = 0
+        while True:
+            time = time.pref_counter() - start_time
+            if time > 300:
+                break
+            time.sleep(3)
 
         print("###################\n# phase1 finished #\n###################")
         self.i2c.write_byte(self.arduino.ARDUINO_ADRESS, self.arduino.PHASE_END)
