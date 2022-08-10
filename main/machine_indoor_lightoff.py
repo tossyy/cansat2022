@@ -377,7 +377,7 @@ class Machine_indoor_lightoff: #機体
                 continue
 
             if res['percent'] > 0.75: # 赤の領域が大きい場合は、終了する
-                print("赤の領域が50%以上となったため終了")
+                print("赤の領域が75%以上となったため終了")
                 break
 
             # 旋回すべき角度
@@ -401,7 +401,7 @@ class Machine_indoor_lightoff: #機体
             self.motor.func_forward()
             time.sleep(2)
             self.motor.func_brake()
-            
+
         print("###################\n# phase7 finished #\n###################")
         self.i2c.write_byte(self.arduino.ARDUINO_ADRESS, self.arduino.PHASE_END)
 
