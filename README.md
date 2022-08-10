@@ -143,6 +143,7 @@ scp <送信したいファイルのパス> pi@raspberrypi.local:<送信したい
 sudo systemctl status cansat
 ```
 で確認できる。  
+
 また，いちいち電源切ったりしなくても，動作確認の際には，
 ```bash
 sudo systemctl start cansat
