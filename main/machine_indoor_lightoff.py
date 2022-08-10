@@ -374,8 +374,6 @@ class Machine_indoor_lightoff: #機体
                 self.motor.func_right()
                 time.sleep(1)
                 self.motor.func_brake()
-                forward_counter = 0
-                rotation_counter += 1
                 continue
 
             if res['percent'] > 0.75: # 赤の領域が大きい場合は、終了する
@@ -403,9 +401,7 @@ class Machine_indoor_lightoff: #機体
             self.motor.func_forward()
             time.sleep(2)
             self.motor.func_brake()
-            forward_counter += 1
-            rotation_counter = 0
-
+            
         print("###################\n# phase7 finished #\n###################")
         self.i2c.write_byte(self.arduino.ARDUINO_ADRESS, self.arduino.PHASE_END)
 
