@@ -75,10 +75,10 @@ class Machine_indoor_lightoff: #機体
         ・5分間待機する
         '''
 
-        start_time = time.pref_counter()
+        start_time = time.perf_counter()
         tim = 0
         while True:
-            tim = time.pref_counter() - start_time
+            tim = time.perf_counter() - start_time
             print("time:{:5.1f}".format(time))
             if tim > 40:
                 break
