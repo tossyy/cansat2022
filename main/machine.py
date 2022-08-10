@@ -1,4 +1,5 @@
 
+from turtle import forward
 import smbus #気圧センサの管理に使います
 import time
 import struct
@@ -418,6 +419,21 @@ class Machine: #機体
         self.i2c.write_byte(self.arduino.ARDUINO_ADRESS, self.arduino.PHASE_START)
         file_No = 0
         pre_res = None
+
+        # スタック判定用諸量
+        with open(self.target_position_path, mode='r') as f:
+            lines = [s.strip() for s in f.readlines()]
+            target_latitude = float(lines[0])
+            target_longitude = float(lines[1])
+
+        dist = lambda latitude, longitude: math.sqrt(((latitude-target_latitude)*self.m_par_lat)**2 + ((longitude-target_longitude)*self.m_par_lng)**2)
+
+        forward_counter = 0
+        rotation_counter = 0
+
+        phase7_data = []
+        phase7_data.append(['time_stamp','latitude','longitude','theta', 'distance'])
+
         while True:
 
             file_path = '/home/pi/utat/log/img/image{:>03d}.jpg'.format(file_No)
@@ -427,26 +443,39 @@ class Machine: #機体
             self.camera.take_pic(file_path) # 写真を撮る
             res = self.camera.detect_center(file_path) # 赤の最大領域の占有率と重心を求める
 
-             # スタック判定
-            if file_No > 1 and pre_res["percent"] != 0 and res["percent"] != 0 :
-                percent_dif = abs(pre_res['percent'] - res['percent'])
-                center_dif = math.sqrt((pre_res['center'][0]-res['center'][0])**2+(pre_res['center'][1]-res['center'][1])**2)
-                if percent_dif < 0.001 and center_dif < 0.01:
-                    print("percent_dif:{} | center_dif:{} -> 後退して旋回".format(percent_dif, center_dif))
+            # スタック判定
+            # ①cansatの向きの計測
+            mag = self.nine.get_mag_value_corrected()
+            theta = math.atan(mag[0]/mag[1])
+
+            # ②cansatとゴールの距離測定
+            current_position = self.gps.get_position()
+            latitude = current_position['latitude']
+            longitude = current_position['longitude']
+
+            distance = dist(latitude, longitude)
+
+            time_stamp = time.perf_counter()-self.start_time
+
+            phase7_data.append([time_stamp, latitude, longitude, theta, distance])
+
+            if len(phase7_data) > 4:
+                distance_dif = abs(phase7_data[-3][4] - distance)
+                argument_dif = abs(phase7_data[-3][3] - theta)
+                if (distance_dif < 0.05 and forward_counter > 3) or (argument_dif < math.pi/6 and rotation_counter > 3):
+                    print("distance_dif:{} | argument_dif:{} -> 後退して旋回".format(distance_dif, argument_dif))
                     self.motor.func_back(speed=100)
                     time.sleep(2)
                     self.motor.func_right(speed=100)
                     time.sleep(2)
-
-            pre_res = res.copy()
-
-            print("{}\n{}".format(res,pre_res))
 
             if res['percent'] < 0.001: # 赤の領域が少ない場合は、旋回する
                 print("赤の領域微小のため右に1秒旋回")
                 self.motor.func_right()
                 time.sleep(1)
                 self.motor.func_brake()
+                forward_counter = 0
+                rotation_counter += 1
                 continue
 
             if res['percent'] > 0.75: # 赤の領域が大きい場合は、終了する
@@ -474,6 +503,8 @@ class Machine: #機体
             self.motor.func_forward()
             time.sleep(2)
             self.motor.func_brake()
+            forward_counter += 1
+            rotation_counter = 0
 
         print("###################\n# phase7 finished #\n###################")
         self.i2c.write_byte(self.arduino.ARDUINO_ADRESS, self.arduino.PHASE_END)
