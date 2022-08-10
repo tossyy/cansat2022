@@ -76,11 +76,11 @@ class Machine_indoor_lightoff: #機体
         '''
 
         start_time = time.pref_counter()
-        time = 0
+        tim = 0
         while True:
-            time = time.pref_counter() - start_time
+            tim = time.pref_counter() - start_time
             print("time:{:5.1f}".format(time))
-            if time > 40:
+            if tim > 40:
                 break
             time.sleep(3)
 
