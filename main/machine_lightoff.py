@@ -94,7 +94,7 @@ class Machine_lightoff: #機体
         '''
 
         # 光を検知し始めた時間
-        start_time = time.pref_counter()
+        start_time = time.perf_counter()
 
         # センサーの取得値を保存する配列
         phase2_data = []

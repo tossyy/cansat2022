@@ -82,7 +82,7 @@ class Machine_indoor_lightoff: #機体
             print("time:{:5.1f}".format(tim))
             if tim > 40:
                 break
-            time.sleep(3)
+            time.sleep(0.3)
 
         print("###################\n# phase1 finished #\n###################")
         self.i2c.write_byte(self.arduino.ARDUINO_ADRESS, self.arduino.PHASE_END)
@@ -99,7 +99,7 @@ class Machine_indoor_lightoff: #機体
         '''
 
         # 光を検知し始めた時間
-        start_time = time.pref_counter()
+        start_time = time.perf_counter()
 
         # センサーの取得値を保存する配列
         phase2_data = []
