@@ -1,4 +1,4 @@
-from machine import Machine_lightoff
+from machine_lightoff import Machine_lightoff
 
 
 print("Machine setting up...")

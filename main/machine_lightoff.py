@@ -1,6 +1,5 @@
 # 光ピンが使えない条件を想定（筒がタイプエス）
 
-from turtle import forward
 import smbus #気圧センサの管理に使います
 import time
 import struct
