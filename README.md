@@ -132,8 +132,32 @@ scp <送信したいファイルのパス> pi@raspberrypi.local:<送信したい
 	```bash
 	sudo systemctl load-daemon
 	```  
+	もともとのunit（この場合だと`cansat.service`）を編集して反映するには，
+	```bash
+	sudo systemctl daemon-reload
+	```
+	をする。  
+
 デーモンの状態は、
 ```bash
 sudo systemctl status cansat
 ```
-で確認できる。
+で確認できる。  
+また，いちいち電源切ったりしなくても，動作確認の際には，
+```bash
+sudo systemctl start cansat
+```
+と
+```bash
+sudo systemctl stop cansat
+```
+が便利。  
+
+今回のcansatでデーモンが起動しないことが多々あった。  
+そ原因としては，以下の二つが挙げられた。
+1. root権限の仕様  
+	必要なライブラリは`pip`でインストールしたが，これはシステムではなくユーザー用にインストールされるため，root権限なしでインストールするとモジュールをrootにアクセスできなくなる。（[参考記事](https://tomosoft.jp/design/?p=11697)）  
+	なので，もしデーモンがうまく動かなかったら，utau/log配下にあるerror.txtを読んでライブラリが原因であれば，`sudo pip install `で必要モジュールをインストールし直さなければならない。
+
+2. 機器の問題  
+	接触不良で動かないなどの事例も見られた。今回はカメラ（とAruduino？）。カメラのコネクタが捻じ曲がっててラズパイと接続ができてなかったためエラーが発生。
