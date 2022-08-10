@@ -1,6 +1,5 @@
 # indoor条件（GPSが使えない）& 光ピンが使えない条件（筒がタイプエス）を想定。
 
-from turtle import forward
 import smbus #気圧センサの管理に使います
 import time
 import struct
