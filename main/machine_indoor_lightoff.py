@@ -80,7 +80,8 @@ class Machine_indoor_lightoff: #機体
         time = 0
         while True:
             time = time.pref_counter() - start_time
-            if time > 300:
+            print("time:{:5.1f}".format(time))
+            if time > 40:
                 break
             time.sleep(3)
 
