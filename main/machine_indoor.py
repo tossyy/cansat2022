@@ -146,7 +146,7 @@ class Machine_indoor: #機体
         '''
 
         # 光を検知しているかどうかの閾値
-        light_threshold = 300
+        light_threshold = 500
 
         # 光を検知し続けているかのフラグ
         is_continue = False
