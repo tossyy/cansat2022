@@ -436,7 +436,7 @@ class Machine_indoor: #機体
             self.camera.take_pic(file_path) # 写真を撮る
             res = self.camera.detect_center(file_path) # 赤の最大領域の占有率と重心を求める
 
-            if res['percent'] < 0.001: # 赤の領域が少ない場合は、旋回する
+            if res['percent'] < 0.0005: # 赤の領域が少ない場合は、旋回する
                 print("赤の領域微小のため右に1秒旋回")
                 self.motor.func_right()
                 time.sleep(1)
