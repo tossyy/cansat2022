@@ -443,8 +443,8 @@ class Machine_indoor: #機体
                 self.motor.func_brake()
                 continue
 
-            if res['percent'] > 0.75: # 赤の領域が大きい場合は、終了する
-                print("赤の領域が75%以上となったため終了")
+            if res['percent'] > 0.70: # 赤の領域が大きい場合は、終了する
+                print("赤の領域が70%以上となったため終了")
                 break
 
             # 旋回すべき角度
