@@ -569,8 +569,8 @@ if __name__ == "__main__":
     ma = Machine_indoor()
     try:
         time.sleep(5)
-        ma.phase5()
-        ma.phase6()
+        #ma.phase5()
+        #ma.phase6()
         ma.phase7()
 
     except Exception as e:
