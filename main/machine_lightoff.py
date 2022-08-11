@@ -69,14 +69,22 @@ class Machine_lightoff: #機体
         print("###################\n# phase1 start    #\n###################")
         self.i2c.write_byte(self.arduino.ARDUINO_ADRESS, self.arduino.PHASE_START)
 
+
         '''
         【暗闇判定】
         条件
-        ・5分間待機する
+        ・6分間待機する
         '''
 
-        time.sleep(300)
-
+        start_time = time.perf_counter()
+        tim = 0
+        while True:
+            tim = time.perf_counter() - start_time
+            print("time:{:5.1f}".format(tim))
+            if tim > 360:
+                break
+            time.sleep(0.3)
+        
         print("###################\n# phase1 finished #\n###################")
         self.i2c.write_byte(self.arduino.ARDUINO_ADRESS, self.arduino.PHASE_END)
 

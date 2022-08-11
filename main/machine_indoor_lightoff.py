@@ -72,7 +72,7 @@ class Machine_indoor_lightoff: #機体
         '''
         【暗闇判定】
         条件
-        ・5分間待機する
+        ・6分間待機する
         '''
 
         start_time = time.perf_counter()
@@ -80,7 +80,7 @@ class Machine_indoor_lightoff: #機体
         while True:
             tim = time.perf_counter() - start_time
             print("time:{:5.1f}".format(tim))
-            if tim > 40:
+            if tim > 360:
                 break
             time.sleep(0.3)
 
