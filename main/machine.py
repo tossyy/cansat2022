@@ -403,10 +403,10 @@ class Machine: #機体
             
             self.motor.func_forward()
             forward_time = dist(latitude, longitude)/10 / 0.5
-            if forward_time < 10:
+            if forward_time < 8:
                 time.sleep(dist(latitude, longitude)/10 / 0.5) #暫定の0.5m/s。モーターのクラス変数にスピード追加して。！！！
             else:
-                time.sleep(10)
+                time.sleep(8)
             self.motor.func_brake()
             if forward_sequence:
                 forward_counter += 1
