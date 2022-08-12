@@ -402,7 +402,11 @@ class Machine: #機体
                     forward_sequence = False
             
             self.motor.func_forward()
-            time.sleep(dist(latitude, longitude)/10 / 0.5) #暫定の0.5m/s。モーターのクラス変数にスピード追加して。！！！
+            forward_time = dist(latitude, longitude)/10 / 0.5
+            if forward_time < 10:
+                time.sleep(dist(latitude, longitude)/10 / 0.5) #暫定の0.5m/s。モーターのクラス変数にスピード追加して。！！！
+            else:
+                time.sleep(10)
             self.motor.func_brake()
             if forward_sequence:
                 forward_counter += 1
