@@ -17,8 +17,9 @@ from camera import Camera
 
 class Machine: #機体
 
-    m_par_lat = 111092.7384
-    m_par_lng = 81540.4864 #過去のものを流用
+    # 能代宇宙科学研究所仕様
+    m_par_lat = 111319.491
+    m_par_lng = 85078.906 
 
     target_position_path = '/home/pi/utat/log/target_posision.txt'
     mag_value_raw_path = '/home/pi/utat/log/mag_value_raw.csv'
