@@ -339,7 +339,7 @@ class Machine: #機体
 
             dif_arg = 999
 
-            while abs(dif_arg) > math.pi/6:
+            while abs(dif_arg) > math.pi/8:
 
                 # スタック判定
                 if len(phase6_data) > 4 and (right_counter > 3 or left_counter > 3 or forward_counter > 3):
