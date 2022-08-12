@@ -478,8 +478,8 @@ class Machine: #機体
                 rotation_counter += 1
                 continue
 
-            if res['percent'] > 0.75: # 赤の領域が大きい場合は、終了する
-                print("赤の領域が50%以上となったため終了")
+            if res['percent'] > 0.70: # 赤の領域が大きい場合は、終了する
+                print("赤の領域が70%以上となったため終了")
                 break
 
             # 旋回すべき角度
