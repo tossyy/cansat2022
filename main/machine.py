@@ -74,7 +74,7 @@ class Machine: #機体
         【暗闇判定】
         条件（以下のうちいずれかを満たせばOK）
         ①30秒間光センサが閾値を上回る
-        ②120秒間経過する
+        ②360秒間経過する
         (暗いほど値が大きい)
         '''
 
@@ -120,7 +120,7 @@ class Machine: #機体
                 start_time = time.perf_counter()
 
             tim_case = time.perf_counter() - self.phase0_time
-            if tim_case > 120:
+            if tim_case > 360:
                 print("暗闇判定：ケース②")
                 break
 
