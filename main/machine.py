@@ -488,7 +488,7 @@ class Machine: #機体
                     self.motor.func_right(speed=100)
                     time.sleep(2)
 
-            if res['percent'] < 0.001: # 赤の領域が少ない場合は、旋回する
+            if res['percent'] < 0.0005: # 赤の領域が少ない場合は、旋回する
                 print("赤の領域微小のため右に1秒旋回")
                 self.motor.func_right()
                 time.sleep(1)
@@ -497,8 +497,8 @@ class Machine: #機体
                 rotation_counter += 1
                 continue
 
-            if res['percent'] > 0.70: # 赤の領域が大きい場合は、終了する
-                print("赤の領域が70%以上となったため終了")
+            if res['percent'] > 0.45: # 赤の領域が大きい場合は、終了する
+                print("赤の領域が45%以上となったため終了")
                 break
 
             # 旋回すべき角度
