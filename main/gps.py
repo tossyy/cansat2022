@@ -5,7 +5,10 @@ import threading
 class GPS:
     def rungps(self): # GPSモジュールを読み、GPSオブジェクトを更新する
         while True:
-            sentence = self.ser.readline().decode('utf-8') # GPSデーターを読み、文字列に変換する
+            try:
+                sentence = self.ser.readline().decode('utf-8') # GPSデーターを読み、文字列に変換する
+            except UnicodeDecodeError:
+                sentence = self.ser.readline().decode('utf-8') # GPSデーターを読み、文字列に変換する
             if sentence[0] != '$': # 先頭が'$'でなければ捨てる
                 continue
             for x in sentence: # 読んだ文字列を解析してGPSオブジェクトにデーターを追加、更新する
