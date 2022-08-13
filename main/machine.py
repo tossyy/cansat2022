@@ -497,7 +497,7 @@ class Machine: #機体
                 rotation_counter += 1
                 continue
 
-            if res['percent'] > 0.99: # 赤の領域が大きい場合は、終了する
+            if res['percent'] > 0.45: # 赤の領域が大きい場合は、終了する
                 print("赤の領域が45%以上となったため終了")
                 break
 
@@ -625,8 +625,8 @@ if __name__ == "__main__":
     ma = Machine()
     try:
         time.sleep(5)
-        #ma.phase5()
-        #ma.phase6()
+        ma.phase5()
+        ma.phase6()
         ma.phase7()
 
     except Exception as e:
