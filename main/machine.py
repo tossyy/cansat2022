@@ -372,8 +372,46 @@ class Machine: #機体
                         left_counter = 0
 
                 mag = self.nine.get_mag_value_corrected()
-                phai = math.atan(((target_latitude-latitude)*self.m_par_lat) / ((target_longitude-longitude)*self.m_par_lng))
-                theta = math.atan(mag[0]/mag[1])
+
+                phai_calc_continue = True
+                theta_calc_continue = True
+
+                while phai_calc_continue or theta_calc_continue:
+                    try:
+                        phai = math.atan(((target_latitude-latitude)*self.m_par_lat) / ((target_longitude-longitude)*self.m_par_lng))
+                        phai_calc_continue = False
+
+                    except ZeroDivisionError as e:
+                        print(e)
+                        self.motor.func_right()
+                        time.sleep(0.5)
+
+                        # gps が取れない時のやつ
+                        gps_start = time.perf_counter()
+
+                        while True:
+                            current_position = self.gps.get_position()
+                            latitude = current_position['latitude']
+                            longitude = current_position['longitude']
+                            if gps_start - time.perf_counter() > 40:
+                                phase6_is_continue = False
+                                break
+                            if latitude == 0 or longitude == 0:
+                                continue
+                            break
+
+
+                    try:
+                        theta = math.atan(mag[0]/mag[1])
+                        theta_calc_continue = False
+                    
+                    except ZeroDivisionError as e:
+                        print(e)
+                        self.motor.func_right()
+                        time.sleep(0.5)
+                        mag = self.nine.get_mag_value_corrected()
+                    
+
                 if target_longitude-longitude < 0:
                     phai += math.pi
                 if phai < 0:
