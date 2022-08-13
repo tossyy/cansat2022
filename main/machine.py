@@ -436,7 +436,7 @@ class Machine: #機体
                     
                 if dif_arg > 0:
                     self.motor.func_left(speed = 25)
-                    time.sleep(dif_arg*4/5)
+                    time.sleep(dif_arg / 2)
                     self.motor.func_brake()
                     left_counter += 1
                     forward_counter = 0
@@ -446,7 +446,7 @@ class Machine: #機体
                     
                 else:
                     self.motor.func_right(speed = 25)
-                    time.sleep(abs(dif_arg)*4/5)
+                    time.sleep(abs(dif_arg) / 2)
                     self.motor.func_brake()
                     right_counter += 1
                     forward_counter = 0
