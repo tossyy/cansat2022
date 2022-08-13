@@ -326,12 +326,26 @@ class Machine: #機体
         right_counter = 0
         left_counter = 0
         forward_sequence = True
+
+        phase6_is_continue = True
         
 
-        while True:
-            current_position = self.gps.get_position()
-            latitude = current_position['latitude']
-            longitude = current_position['longitude']
+        while phase6_is_continue:
+            
+            # gps が取れない時のやつ
+            gps_start = time.perf_counter()
+
+            while True:
+                current_position = self.gps.get_position()
+                latitude = current_position['latitude']
+                longitude = current_position['longitude']
+                if gps_start - time.perf_counter() > 40:
+                    phase6_is_continue = False
+                    break
+                if latitude == 0 or longitude == 0:
+                    continue
+                break
+
 
             distance = dist(latitude, longitude)
 
